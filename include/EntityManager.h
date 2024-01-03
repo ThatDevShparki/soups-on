@@ -1,7 +1,4 @@
 #pragma once
 
-class Component
-{
-public:
-	bool has = false;
-};
+#include "Vec2.h"
+
