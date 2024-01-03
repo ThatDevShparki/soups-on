@@ -1,7 +1,3 @@
-add_executable(soups_on src/main.cpp)
-
-
-
 cmake_minimum_required(VERSION 3.27)
 
 set(project "soups-on")
@@ -12,7 +8,6 @@ project(${project}
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-Wall -Wno-unused-result -pedantic-errors")
-
 
 
 # install dependencies
@@ -27,6 +22,7 @@ FetchContent_MakeAvailable(SFML)
 
 # create executable
 set(src_files
+        src/Game.cpp
         src/main.cpp
 )
 add_executable(${project} ${src_files})
