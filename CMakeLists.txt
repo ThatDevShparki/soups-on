@@ -22,6 +22,8 @@ FetchContent_MakeAvailable(SFML)
 
 # create executable
 set(src_files
+        src/Entity.cpp
+        src/EntityManager.cpp
         src/Game.cpp
         src/main.cpp
 )

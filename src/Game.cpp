@@ -4,9 +4,8 @@
 Game::Game()
 {
 	m_window.create(
-		sf::VideoMode::getFullscreenModes()[0],
-		"Soups On",
-		sf::Style::Fullscreen
+		sf::VideoMode::getDesktopMode(),
+		"Soups On"
 	);
 	m_window.setFramerateLimit(60);
 }
