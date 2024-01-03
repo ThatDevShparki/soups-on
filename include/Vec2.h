@@ -10,6 +10,8 @@ public:
 	Vec2();
 	Vec2(float x, float y);
 
+	[[nodiscard]] float theta() const;
+
 	[[nodiscard]] Vec2 operator +(const Vec2& rhs) const;
 	[[nodiscard]] Vec2 operator -(const Vec2& rhs) const;
 	[[nodiscard]] Vec2 operator *(float rhs) const;

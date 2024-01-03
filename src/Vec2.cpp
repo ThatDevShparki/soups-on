@@ -10,6 +10,12 @@ Vec2::Vec2(float x, float y)
 }
 
 
+float Vec2::theta() const
+{
+	return atanf(x / y);
+}
+
+
 Vec2 Vec2::operator +(const Vec2& rhs) const
 {
 	return { x + rhs.x, y + rhs.y };
