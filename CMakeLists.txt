@@ -26,6 +26,7 @@ set(src_files
         src/EntityManager.cpp
         src/Game.cpp
         src/main.cpp
+        src/Vec2.cpp
 )
 add_executable(${project} ${src_files})
 
