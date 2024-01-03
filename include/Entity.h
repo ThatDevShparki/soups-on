@@ -17,22 +17,42 @@ class Entity
 
 public:
 
+	void destroy();
+
 	[[nodiscard]] bool isActive() const;
 	[[nodiscard]] size_t id() const;
 	[[nodiscard]] const std::string& tag() const;
 
 	template<typename T>
-	T& getComponent();
-
-	template<typename T>
-	const T& getComponent() const;
-
-	template<typename T>
-	bool hasComponent() const;
+	[[nodiscard]] bool hasComponent() const
+	{
+		return getComponent<T>().has;
+	}
 
 	template<typename T, typename... TArgs>
-	T& addComponent(TArgs& ... args);
+	T& addComponent(TArgs&& ... mArgs)
+	{
+		auto& component = getComponent<T>();
+		component = T(std::forward<TArgs>(mArgs)...);
+		component.has = true;
+		return component;
+	}
 
 	template<typename T>
-	void removeComponent();
+	T& getComponent()
+	{
+		return std::get<T>(m_components);
+	}
+
+	template<typename T>
+	const T& getComponent() const
+	{
+		return std::get<T>(m_components);
+	}
+
+	template<typename T>
+	void removeComponent()
+	{
+		getComponent<T>() = T();
+	}
 };

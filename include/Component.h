@@ -15,7 +15,7 @@ public:
 class CTransform : public Component
 {
 public:
-	
+
 	Vec2  pos    = { 0.0f, 0.0f };
 	Vec2  vel    = { 0.0f, 0.0f };
 	Vec2  acc    = { 0.0f, 0.0f };
@@ -55,9 +55,10 @@ public:
 
 	CBoundingBox() = default;
 
-	CBoundingBox(const Vec2& size, const Vec2& halfSize)
-		: size(size), halfSize(halfSize)
+	explicit CBoundingBox(const Vec2& size)
+		: size(size)
 	{
+		halfSize = { size.x / 2, size.y / 2 };
 	}
 };
 
