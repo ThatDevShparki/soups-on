@@ -2,15 +2,20 @@
 
 #include "Vec2.h"
 
+#include <tuple>
+
+
 class Component
 {
 public:
 	bool has = false;
 };
 
+
 class CTransform : public Component
 {
 public:
+	
 	Vec2  pos    = { 0.0f, 0.0f };
 	Vec2  vel    = { 0.0f, 0.0f };
 	Vec2  acc    = { 0.0f, 0.0f };
@@ -43,6 +48,8 @@ public:
 
 class CBoundingBox : public Component
 {
+public:
+
 	Vec2 size     = { 0.0f, 0.0f };
 	Vec2 halfSize = { 0.0f, 0.0f };
 
@@ -53,3 +60,9 @@ class CBoundingBox : public Component
 	{
 	}
 };
+
+
+typedef std::tuple<
+	CTransform,
+	CBoundingBox
+> ComponentTuple;
