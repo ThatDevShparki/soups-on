@@ -20,8 +20,12 @@ void Game::run()
 
 void Game::update()
 {
+	m_entities.update();
+
 	sUserInput();
 	sRender();
+
+	m_currentFrame++;
 }
 
 void Game::sRender()
