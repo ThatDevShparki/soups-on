@@ -1,14 +1,53 @@
 #include "Game.h"
 
+#include <fstream>
+#include <iostream>
 
-Game::Game()
+
+Game::Game() = default;
+
+Game::Game(const std::string& path)
+{
+	init(path);
+}
+
+
+void Game::init(const std::string& path)
 {
 	m_window.create(
 		sf::VideoMode::getDesktopMode(),
 		"Soups On"
 	);
 	m_window.setFramerateLimit(60);
+
+	// Load assets
+	std::ifstream file(path);
+	if (!file)
+	{
+		std::cerr << "Could not load manifest from path: " + path << std::endl;
+		exit(-1);
+	}
+
+	std::string head;
+	while (file >> head)
+	{
+		if (head == "font")
+		{
+			std::string n, p;
+			file >> n >> p;
+			m_assets.addFont(n, "assets/" + p);
+		}
+		else if (head == "texture")
+		{
+			std::string n, p;
+			file >> n >> p;
+			m_assets.addTexture(n, "assets/" + p);
+		}
+	}
+
+	std::cout << "Loaded all assets from manifest " + path << std::endl;
 }
+
 
 void Game::run()
 {

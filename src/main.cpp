@@ -3,6 +3,6 @@
 
 int main()
 {
-	Game game;
+	Game game("assets/manifest.txt");
 	game.run();
 }

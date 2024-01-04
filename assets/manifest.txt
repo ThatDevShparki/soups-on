@@ -1,0 +1,2 @@
+font font fonts/m5x7.ttf
+texture debug sprites/debug.png
