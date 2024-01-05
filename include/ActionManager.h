@@ -9,9 +9,10 @@ enum ActionSource
 	unknown  = 0,
 	keyboard = 1,
 	mouse    = 2,
+	gamepad  = 3,
 };
-typedef std::tuple<ActionSource, uint16_t> ActionValue;
-typedef std::map<std::string, ActionValue> ActionMap;
+typedef std::tuple<ActionSource, uint16_t> ActionKey;
+typedef std::map<ActionKey, std::string>   ActionMap;
 
 class ActionManager
 {
@@ -19,10 +20,13 @@ class ActionManager
 
 public:
 
+	void registerAction(const ActionKey& action, const std::string& tag);
 	void registerAction(
-		const std::string& tag,
-		const ActionSource& source,
-		const uint16_t& key
+		const ActionSource& source, const uint16_t& code, const std::string& tag
 	);
-	[[nodiscard]] const ActionValue& getAction(const std::string& tag) const;
+
+	[[nodiscard]] const std::string& getAction(const ActionKey& action) const;
+	[[nodiscard]] const std::string& getAction(
+		const ActionSource& source, const uint16_t& code
+	) const;
 };

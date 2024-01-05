@@ -1,15 +1,26 @@
 #include "ActionManager.h"
 
-void ActionManager::registerAction(
-	const std::string& tag,
-	const ActionSource& source,
-	const uint16_t& key
-)
+void ActionManager::registerAction(const ActionKey& action, const std::string& tag)
 {
-	m_actions[tag] = { source, key };
+	m_actions[action] = tag;
 }
 
-const ActionValue& ActionManager::getAction(const std::string& tag) const
+void ActionManager::registerAction(
+	const ActionSource& source,
+	const uint16_t& code,
+	const std::string& tag
+)
 {
-	return m_actions.at(tag);
+	registerAction({ source, code }, tag);
+}
+
+const std::string& ActionManager::getAction(const ActionKey& action) const
+{
+	return m_actions.at(action);
+}
+
+const std::string&
+ActionManager::getAction(const ActionSource& source, const uint16_t& code) const
+{
+	return getAction({ source, code });
 }
