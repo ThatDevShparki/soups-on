@@ -38,3 +38,14 @@ const FontMap& AssetManager::fonts() const
 {
 	return m_fonts;
 }
+
+
+const sf::Texture& AssetManager::getTexture(const std::string& tag) const
+{
+	return m_textures.at(tag);
+}
+
+const sf::Font& AssetManager::getFont(const std::string& tag) const
+{
+	return m_fonts.at(tag);
+}

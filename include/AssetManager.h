@@ -19,4 +19,7 @@ public:
 
 	[[nodiscard]] const TextureMap& textures() const;
 	[[nodiscard]] const FontMap& fonts() const;
+
+	[[nodiscard]] const sf::Texture& getTexture(const std::string& tag) const;
+	[[nodiscard]] const sf::Font& getFont(const std::string& tag) const;
 };
