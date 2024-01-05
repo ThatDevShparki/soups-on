@@ -29,6 +29,9 @@ set(src_files
         src/Game.cpp
         src/Map.cpp
         src/main.cpp
+        src/Scene.cpp
+        src/SceneMenu.cpp
+        src/SceneLevel.cpp
         src/Vec2.cpp
 )
 add_executable(${project} ${src_files})
