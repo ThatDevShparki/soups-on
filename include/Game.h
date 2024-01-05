@@ -15,6 +15,7 @@ class Game
 	size_t           m_currentFrame = 0;
 	Vec2             m_tileSize     = { 32.0f, 32.0f };
 	float            m_scale        = 2.0f;
+	sf::Text         m_gridText;
 
 	void init(const std::string& path);
 	void update();

@@ -44,8 +44,12 @@ void Game::init(const std::string& path)
 			m_assets.addTexture(n, "assets/" + p);
 		}
 	}
-
 	std::cout << "Loaded all assets from manifest " + path << std::endl;
+
+	// Set font
+	m_gridText.setCharacterSize(ceil(9 * m_scale));
+	m_gridText.setFont(m_assets.getFont("font"));
+
 }
 
 
@@ -87,6 +91,15 @@ void Game::sRender()
 		for (float y = 0; y < height; y += s.y)
 		{
 			drawLine({ 0, y }, { width, y });
+
+			for (float x = nextGridX; x < rightX; x += s.x)
+			{
+				std::string xCell = std::to_string((int)x / (int)s.x);
+				std::string yCell = std::to_string((int)y / (int)s.y);
+				m_gridText.setString("(" + xCell + "," + yCell + ")");
+				m_gridText.setPosition(x + 3, height - y - s.y);
+				m_window.draw(m_gridText);
+			}
 		}
 	}
 
