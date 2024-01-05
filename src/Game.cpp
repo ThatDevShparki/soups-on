@@ -69,6 +69,27 @@ void Game::update()
 
 void Game::sRender()
 {
+	m_window.clear(sf::Color(88, 181, 167));
+
+	if (m_renderGrid)
+	{
+		Vec2  s         = gridSize();
+		float width     = float(m_window.getSize().x);
+		float height    = float(m_window.getSize().y);
+		float leftX     = m_window.getView().getCenter().x - width / 2.0f;
+		float rightX    = leftX + width + s.x;
+		float nextGridX = leftX - float(int(leftX) % int(s.x));
+
+		for (float x = nextGridX; x <= rightX; x += s.x)
+		{
+			drawLine({ x, 0 }, { x, height });
+		}
+		for (float y = 0; y < height; y += s.y)
+		{
+			drawLine({ 0, y }, { width, y });
+		}
+	}
+
 	m_window.display();
 }
 
@@ -88,6 +109,10 @@ void Game::sUserInput()
 			{
 				quit();
 			}
+			if (event.key.code == sf::Keyboard::G)
+			{
+				m_renderGrid = !m_renderGrid;
+			}
 		}
 	}
 }
@@ -106,4 +131,10 @@ const sf::RenderWindow& Game::window() const
 bool Game::isRunning() const
 {
 	return m_window.isOpen() && m_running;
+}
+
+
+std::shared_ptr<Entity> Game::player() const
+{
+	return m_entities.getEntities("player")[0];
 }
