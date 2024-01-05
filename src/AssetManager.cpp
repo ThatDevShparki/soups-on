@@ -4,6 +4,44 @@
 #include <iostream>
 
 
+AssetManager::AssetManager() = default;
+
+AssetManager::AssetManager(const std::string& manifestPath)
+{
+	init(manifestPath);
+}
+
+
+void AssetManager::init(const std::string& manifestPath)
+{
+	std::ifstream file(manifestPath);
+	if (!file)
+	{
+		std::cerr << "Could not load manifest from path: " + manifestPath
+				  << std::endl;
+		exit(-1);
+	}
+
+	std::string head;
+	while (file >> head)
+	{
+		if (head == "font")
+		{
+			std::string n, p;
+			file >> n >> p;
+			addFont(n, "assets/" + p);
+		}
+		else if (head == "texture")
+		{
+			std::string n, p;
+			file >> n >> p;
+			addTexture(n, "assets/" + p);
+		}
+	}
+	std::cout << "Loaded all assets from manifest " + manifestPath << std::endl;
+}
+
+
 void AssetManager::addTexture(const std::string& tag, const std::string& path)
 {
 	sf::Texture texture;

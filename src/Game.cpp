@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "SceneLevel.h"
+
 
 Game::Game() = default;
 
@@ -12,43 +14,17 @@ Game::Game(const std::string& path)
 }
 
 
-void Game::init(const std::string& path)
+void Game::init(const std::string& manifestPath)
 {
+	// setup game window
 	m_window.create(
 		sf::VideoMode::getDesktopMode(),
 		"Soups On"
 	);
 	m_window.setFramerateLimit(60);
 
-	// Load assets
-	std::ifstream file(path);
-	if (!file)
-	{
-		std::cerr << "Could not load manifest from path: " + path << std::endl;
-		exit(-1);
-	}
-
-	std::string head;
-	while (file >> head)
-	{
-		if (head == "font")
-		{
-			std::string n, p;
-			file >> n >> p;
-			m_assets.addFont(n, "assets/" + p);
-		}
-		else if (head == "texture")
-		{
-			std::string n, p;
-			file >> n >> p;
-			m_assets.addTexture(n, "assets/" + p);
-		}
-	}
-	std::cout << "Loaded all assets from manifest " + path << std::endl;
-
-	// Set font
-	m_gridText.setCharacterSize(ceil(9 * m_scale));
-	m_gridText.setFont(m_assets.getFont("font"));
+	// register scene
+	changeScene("level", std::make_shared<SceneLevel>(this, manifestPath));
 
 }
 
@@ -63,45 +39,12 @@ void Game::run()
 
 void Game::update()
 {
-	m_entities.update();
-
-	sUserInput();
-	sRender();
-
-	m_currentFrame++;
-}
-
-void Game::sRender()
-{
 	m_window.clear(sf::Color(88, 181, 167));
 
-	if (m_renderGrid)
-	{
-		Vec2  s         = gridSize();
-		float width     = float(m_window.getSize().x);
-		float height    = float(m_window.getSize().y);
-		float leftX     = m_window.getView().getCenter().x - width / 2.0f;
-		float rightX    = leftX + width + s.x;
-		float nextGridX = leftX - float(int(leftX) % int(s.x));
 
-		for (float x = nextGridX; x <= rightX; x += s.x)
-		{
-			drawLine({ x, 0 }, { x, height });
-		}
-		for (float y = 0; y < height; y += s.y)
-		{
-			drawLine({ 0, y }, { width, y });
+	sUserInput();
 
-			for (float x = nextGridX; x < rightX; x += s.x)
-			{
-				std::string xCell = std::to_string((int)x / (int)s.x);
-				std::string yCell = std::to_string((int)y / (int)s.y);
-				m_gridText.setString("(" + xCell + "," + yCell + ")");
-				m_gridText.setPosition(x + 3, height - y - s.y);
-				m_window.draw(m_gridText);
-			}
-		}
-	}
+	currentScene()->update();
 
 	m_window.display();
 }
@@ -122,10 +65,6 @@ void Game::sUserInput()
 			{
 				quit();
 			}
-			if (event.key.code == sf::Keyboard::G)
-			{
-				m_renderGrid = !m_renderGrid;
-			}
 		}
 	}
 }
@@ -136,7 +75,7 @@ void Game::quit()
 	m_running = false;
 }
 
-const sf::RenderWindow& Game::window() const
+sf::RenderWindow& Game::window()
 {
 	return m_window;
 }
@@ -147,7 +86,21 @@ bool Game::isRunning() const
 }
 
 
-std::shared_ptr<Entity> Game::player() const
+/* scene management */
+
+
+std::shared_ptr<Scene> Game::currentScene() const
 {
-	return m_entities.getEntities("player")[0];
+	return m_scenes.at(m_currentScene);
+}
+
+void Game::changeScene(const std::string& tag)
+{
+	m_currentScene = tag;
+}
+
+void Game::changeScene(const std::string& tag, std::shared_ptr<Scene> scene)
+{
+	m_scenes[tag] = scene;
+	m_currentScene = tag;
 }

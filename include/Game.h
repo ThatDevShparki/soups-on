@@ -2,44 +2,39 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "AssetManager.h"
-#include "EntityManager.h"
+#include "Vec2.h"
+#include "Scene.h"
+
+#include <string>
+#include <map>
+
+class Scene;
+
+typedef std::map<std::string, std::shared_ptr<Scene>> SceneMap;
 
 class Game
 {
 	sf::RenderWindow m_window;
-	EntityManager    m_entities;
-	AssetManager     m_assets;
-	bool             m_running      = true;
-	bool             m_renderGrid   = false;
-	size_t           m_currentFrame = 0;
-	Vec2             m_tileSize     = { 32.0f, 32.0f };
-	float            m_scale        = 2.0f;
-	sf::Text         m_gridText;
+	bool             m_running = true;
+	SceneMap         m_scenes;
+	std::string      m_currentScene;
+
 
 	void init(const std::string& path);
 	void update();
 
-	void sRender();
 	void sUserInput();
 
 public:
 
 	Game();
-	explicit Game(const std::string& path);
+	explicit Game(const std::string& manifestPath);
 
 	void quit();
 	void run();
 
-	const sf::RenderWindow& window() const;
+	sf::RenderWindow& window();
 	bool isRunning() const;
-
-	std::shared_ptr<Entity> player() const;
-
-	[[nodiscard]] const Vec2& gridSize() const
-	{
-		return m_tileSize * m_scale;
-	}
 
 	void drawLine(const Vec2& a, const Vec2& b)
 	{
@@ -49,4 +44,11 @@ public:
 		};
 		m_window.draw(line, 2, sf::Lines);
 	}
+
+
+	// scene management
+	[[nodiscard]] std::shared_ptr<Scene> currentScene() const;
+	void changeScene(const std::string& tag);
+	void changeScene(const std::string& tag, std::shared_ptr<Scene> scene);
+
 };

@@ -12,7 +12,12 @@ class AssetManager
 	TextureMap m_textures;
 	FontMap    m_fonts;
 
+	void init(const std::string& manifestPath);
+
 public:
+
+	AssetManager();
+	explicit AssetManager(const std::string& manifestPath);
 
 	void addTexture(const std::string& tag, const std::string& path);
 	void addFont(const std::string& tag, const std::string& path);
