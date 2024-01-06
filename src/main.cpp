@@ -1,6 +1,4 @@
-#include <iostream>
 #include "Game.h"
-#include "Map.h"
 
 int main()
 {
