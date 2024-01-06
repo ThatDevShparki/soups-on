@@ -157,6 +157,17 @@ int Map::at(const Vec2& pos, size_t layer) const
 
 void Map::addLayer(const std::string& layerPath)
 {
+	addLayer(layerPath, m_layerCount);
+}
+
+void Map::addLayer(const std::string& layerPath, int index)
+{
+	if (index < 0 || index > m_layerCount)
+	{
+		std::cerr << "bad index" << std::endl;
+		throw std::invalid_argument("bad index");
+	}
+
 	auto& [layerData, layerSize] = readLayerData(layerPath);
 
 	if (int(layerSize.x) != m_width || int(layerSize.y) != m_height)
@@ -165,9 +176,11 @@ void Map::addLayer(const std::string& layerPath)
 		throw std::invalid_argument("layers should be the same size");
 	}
 
+	int ei = 0;
 	for (const auto& e: layerData)
 	{
-		m_data.push_back(e);
+		m_data.insert(m_data.begin() + int(m_width * m_height * index + ei), e);
+		ei++;
 	}
 	m_layerCount += 1;
 }
