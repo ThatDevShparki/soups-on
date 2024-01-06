@@ -199,9 +199,8 @@ void Map::print() const
 			std::stringstream row;
 			for (int          i = 0; i < m_width; i++)
 			{
-				row << std::setw(10)
-					<< std::to_string(m_data[index]) + " (" + std::to_string(index) +
-					   ") ";
+				row << std::setw(3)
+					<< std::to_string(m_data[index]);
 				index++;
 			}
 			pstrings.push_back(row.str());
