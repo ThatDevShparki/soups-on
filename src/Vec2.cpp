@@ -87,3 +87,9 @@ float Vec2::dist(const Vec2& rhs)
 {
 	return (rhs - *this).mag();
 }
+
+
+const std::string& Vec2::toString() const
+{
+	return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 
 class Vec2
 {
@@ -29,4 +30,6 @@ public:
 	[[nodiscard]] float mag() const;
 	[[nodiscard]] Vec2 norm() const;
 	[[nodiscard]] float dist(const Vec2& rhs);
+
+	[[nodiscard]] const std::string& toString() const;
 };
