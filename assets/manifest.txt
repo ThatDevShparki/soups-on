@@ -1,2 +1,4 @@
 font font fonts/m5x7.ttf
 texture debug sprites/debug.png
+map map_001 0 map_001._map.csv
+map map_001 1 map_001._items.csv

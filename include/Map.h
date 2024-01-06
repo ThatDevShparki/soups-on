@@ -31,6 +31,8 @@ public:
 
 	[[nodiscard]] int at(const Vec2& pos, size_t layer) const;
 
+	void addLayer(const std::string& layerPath);
+
 	void print() const;
 
 	[[nodiscard]] size_t width() const;

@@ -155,6 +155,24 @@ int Map::at(const Vec2& pos, size_t layer) const
 }
 
 
+void Map::addLayer(const std::string& layerPath)
+{
+	auto& [layerData, layerSize] = readLayerData(layerPath);
+
+	if (int(layerSize.x) != m_width || int(layerSize.y) != m_height)
+	{
+		std::cerr << "expected consistently sized layers" << std::endl;
+		throw std::invalid_argument("layers should be the same size");
+	}
+
+	for (const auto& e: layerData)
+	{
+		m_data.push_back(e);
+	}
+	m_layerCount += 1;
+}
+
+
 void Map::print() const
 {
 	int index = 0;
