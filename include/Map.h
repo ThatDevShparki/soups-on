@@ -29,6 +29,9 @@ public:
 	Map();
 	Map(const std::vector<std::string>& layerPaths);
 
+	[[nodiscard]] const std::vector<int>& data() const;
+
+	[[nodiscard]] std::vector<int> at(const Vec2& pos) const;
 	[[nodiscard]] int at(const Vec2& pos, size_t layer) const;
 
 	void addLayer(const std::string& layerPath);

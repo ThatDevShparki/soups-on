@@ -143,6 +143,24 @@ size_t Map::indexOf(const Vec2& pos, size_t layer) const
 	);
 }
 
+const std::vector<int>& Map::data() const
+{
+	return m_data;
+}
+
+
+std::vector<int> Map::at(const Vec2& pos) const
+{
+	std::vector<int> layer;
+
+	for (int i = 0; i < m_layerCount; i++)
+	{
+		layer.push_back(at(pos, i));
+	}
+	
+	return layer;
+}
+
 int Map::at(const Vec2& pos, size_t layer) const
 {
 	size_t index = indexOf(pos, layer);
