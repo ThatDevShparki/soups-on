@@ -89,7 +89,7 @@ float Vec2::dist(const Vec2& rhs)
 }
 
 
-const std::string& Vec2::toString() const
+std::string Vec2::toString() const
 {
 	return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 }

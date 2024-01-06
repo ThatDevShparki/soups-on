@@ -31,5 +31,5 @@ public:
 	[[nodiscard]] Vec2 norm() const;
 	[[nodiscard]] float dist(const Vec2& rhs);
 
-	[[nodiscard]] const std::string& toString() const;
+	[[nodiscard]] std::string toString() const;
 };
