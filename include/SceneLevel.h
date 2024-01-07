@@ -10,7 +10,7 @@ class SceneLevel : public Scene
 
 protected:
 
-	float m_scale    = 3.0;
+	float m_scale    = 1.0f;
 	Vec2  m_tileSize = { 32.0f, 32.0f };
 
 	bool     m_renderGrid = false;
@@ -21,6 +21,9 @@ protected:
 
 	[[nodiscard]] const Vec2& gridSize() const;
 
+	void initEntitiesFromMap(const std::string& mapName);
+	void spawnTile(const Vec2& pos);
+
 public:
 	void init(const std::string& manifestPath);
 
@@ -29,4 +32,6 @@ public:
 
 	void update() override;
 	void quit() override;
+
+	Vec2 tileSize() const;
 };

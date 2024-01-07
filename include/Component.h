@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SFML/Graphics.hpp"
 #include "Vec2.h"
 
 #include <tuple>
@@ -25,6 +26,11 @@ public:
 	float maxAcc = 0.0f;
 
 	CTransform() = default;
+
+	explicit CTransform(const Vec2& pos)
+		: pos(pos)
+	{
+	};
 
 	CTransform(
 		const Vec2& pos,
@@ -62,8 +68,16 @@ public:
 	}
 };
 
+class CShape : public Component
+{
+public:
+	sf::RectangleShape shape;
+	sf::Color          color;
 
-typedef std::tuple<
-	CTransform,
-	CBoundingBox
-> ComponentTuple;
+	CShape() = default;
+
+	CShape(const Vec2& size, const sf::Color& color)
+		: shape({ size.x, size.y }), color(color)
+	{
+	}
+};

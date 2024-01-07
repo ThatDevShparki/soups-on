@@ -4,6 +4,12 @@
 
 #include <string>
 
+typedef std::tuple<
+	CTransform,
+	CBoundingBox,
+	CShape
+> ComponentTuple;
+
 class Entity
 {
 	friend class EntityManager;
@@ -30,7 +36,7 @@ public:
 	}
 
 	template<typename T, typename... TArgs>
-	T& addComponent(TArgs&& ... mArgs)
+	[[nodiscard]]T& addComponent(TArgs&& ... mArgs)
 	{
 		auto& component = getComponent<T>();
 		component = T(std::forward<TArgs>(mArgs)...);
@@ -39,13 +45,13 @@ public:
 	}
 
 	template<typename T>
-	T& getComponent()
+	[[nodiscard]] T& getComponent()
 	{
 		return std::get<T>(m_components);
 	}
 
 	template<typename T>
-	const T& getComponent() const
+	[[nodiscard]] const T& getComponent() const
 	{
 		return std::get<T>(m_components);
 	}

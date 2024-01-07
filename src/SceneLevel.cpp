@@ -1,4 +1,5 @@
 #include "SceneLevel.h"
+#include <iostream>
 
 
 SceneLevel::SceneLevel(Game* game, const std::string& manifestPath)
@@ -17,6 +18,9 @@ void SceneLevel::init(const std::string& manifestPath)
 
 	m_gridText.setCharacterSize(ceil(9 * m_scale));
 	m_gridText.setFont(m_assets.getFont("font"));
+
+	// init entities
+	initEntitiesFromMap("map_001");
 
 	// register actions
 	registerAction(keyboard, sf::Keyboard::W, "up");
@@ -56,6 +60,20 @@ void SceneLevel::sDoAction(const std::string& action)
 
 void SceneLevel::sRender()
 {
+	for (const auto& e: m_entities.getEntities())
+	{
+		auto& transform = e->getComponent<CTransform>();
+		auto& shape     = e->getComponent<CShape>();
+
+		if (transform.has && shape.has)
+		{
+			shape.shape.setPosition(transform.pos.x, transform.pos.y);
+			shape.shape.setOutlineColor(shape.color);
+			shape.shape.setFillColor(shape.color);
+			m_game->window().draw(shape.shape);
+		}
+	}
+
 	if (m_renderGrid)
 	{
 		Vec2  s         = gridSize();
@@ -89,4 +107,46 @@ const Vec2& SceneLevel::gridSize() const
 {
 	return m_tileSize * m_scale;
 }
+
+
+void SceneLevel::initEntitiesFromMap(const std::string& mapName)
+{
+	const Map& map = m_assets.getMap(mapName);
+
+	for (int j = 0; j < map.height(); j++)
+	{
+		for (int i = 0; i < map.width(); i++)
+		{
+			const Vec2 pos{ float(i), float(j) };
+			const auto& layer = map.at(pos);
+
+			for (const auto& e: layer)
+			{
+				if (e == 2)
+				{
+					spawnTile(pos);
+				}
+			}
+		}
+	}
+}
+
+void SceneLevel::spawnTile(const Vec2& pos)
+{
+	auto tile = m_entities.addEntity("tile");
+	tile->addComponent<CTransform>(
+		Vec2{
+			tileSize().x * pos.x,
+			float(m_game->window().getSize().y) - tileSize().y * pos.y
+		}
+	);
+	tile->addComponent<CShape>(tileSize(), sf::Color::Black);
+}
+
+
+Vec2 SceneLevel::tileSize() const
+{
+	return m_tileSize * m_scale;
+}
+
 
