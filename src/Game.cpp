@@ -66,6 +66,29 @@ void Game::sUserInput()
 				quit();
 			}
 		}
+
+		if (event.type == sf::Event::KeyPressed ||
+			event.type == sf::Event::KeyReleased)
+		{
+			if (!currentScene()->handlesAction(
+				ActionSource::keyboard,
+				event.key.code
+			))
+			{
+				continue;
+			}
+
+			const ActionKind kind = (event.type == sf::Event::KeyPressed)
+									? ActionKind::pressed : ActionKind::released;
+
+			currentScene()->doAction(
+				currentScene()->getActionFor(
+					ActionSource::keyboard,
+					event.key.code
+				),
+				kind
+			);
+		}
 	}
 }
 

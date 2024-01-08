@@ -22,7 +22,6 @@ protected:
 	AssetManager  m_assets;
 	ActionManager m_actions;
 
-	virtual void sDoAction(const std::string& action) = 0;
 	virtual void sRender() = 0;
 
 public:
@@ -36,14 +35,18 @@ public:
 	void simulate(size_t frameCount);
 
 	// action management
-	void doAction(const std::string& action);
 	void registerAction(
 		const ActionSource& source,
 		const uint16_t& code,
 		const std::string& action
 	);
-	
+	bool handlesAction(const ActionSource& source, const uint16_t& code) const;
+	[[nodiscard]] const std::string& getActionFor(
+		const ActionSource& source, const uint16_t& code
+	) const;
+
 	virtual void update() = 0;
 	virtual void quit() = 0;
+	virtual void doAction(const std::string& action, const ActionKind& kind) = 0;
 
 };

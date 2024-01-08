@@ -14,13 +14,28 @@ void ActionManager::registerAction(
 	registerAction({ source, code }, tag);
 }
 
+
 const std::string& ActionManager::getAction(const ActionKey& action) const
 {
 	return m_actions.at(action);
 }
 
 const std::string&
-ActionManager::getAction(const ActionSource& source, const uint16_t& code) const
+ActionManager::getAction(
+	const ActionSource& source,
+	const uint16_t& code
+) const
 {
 	return getAction({ source, code });
+}
+
+
+bool ActionManager::hasAction(const ActionKey& action) const
+{
+	return m_actions.find(action) != m_actions.end();
+}
+
+bool ActionManager::hasAction(const ActionSource& source, const uint16_t& code) const
+{
+	return hasAction({ source, code });
 }

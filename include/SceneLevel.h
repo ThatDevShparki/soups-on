@@ -16,10 +16,7 @@ protected:
 	bool     m_renderGrid = false;
 	sf::Text m_gridText;
 
-	void sDoAction(const std::string& action) override;
 	void sRender() override;
-
-	[[nodiscard]] const Vec2& gridSize() const;
 
 	void initEntitiesFromMap(const std::string& mapName);
 	void spawnEntrance(const Vec2& pos);
@@ -35,6 +32,7 @@ public:
 
 	void update() override;
 	void quit() override;
+	void doAction(const std::string& action, const ActionKind& kind) override;
 
 	Vec2 tileSize() const;
 };

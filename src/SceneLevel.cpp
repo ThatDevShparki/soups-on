@@ -23,17 +23,27 @@ void SceneLevel::init(const std::string& manifestPath)
 	initEntitiesFromMap("map_002");
 
 	// register actions
-	registerAction(keyboard, sf::Keyboard::W, "up");
-	registerAction(keyboard, sf::Keyboard::Up, "up");
-	registerAction(keyboard, sf::Keyboard::S, "down");
-	registerAction(keyboard, sf::Keyboard::Down, "down");
-	registerAction(keyboard, sf::Keyboard::A, "left");
-	registerAction(keyboard, sf::Keyboard::Left, "left");
-	registerAction(keyboard, sf::Keyboard::D, "right");
-	registerAction(keyboard, sf::Keyboard::Right, "right");
-	registerAction(keyboard, sf::Keyboard::Space, "jump");
-	registerAction(keyboard, sf::Keyboard::E, "interact");
-	registerAction(keyboard, sf::Keyboard::G, "toggleGrid");
+	registerAction(
+		ActionSource::keyboard, sf::Keyboard::W, "up"
+	);
+	registerAction(
+		ActionSource::keyboard, sf::Keyboard::S, "down"
+	);
+	registerAction(
+		ActionSource::keyboard, sf::Keyboard::A, "left"
+	);
+	registerAction(
+		ActionSource::keyboard, sf::Keyboard::D, "right"
+	);
+	registerAction(
+		ActionSource::keyboard, sf::Keyboard::Space, "jump"
+	);
+	registerAction(
+		ActionSource::keyboard, sf::Keyboard::E, "interact"
+	);
+	registerAction(
+		ActionSource::keyboard, sf::Keyboard::G, "toggleGrid"
+	);
 }
 
 void SceneLevel::update()
@@ -50,11 +60,14 @@ void SceneLevel::quit()
 }
 
 
-void SceneLevel::sDoAction(const std::string& action)
+void SceneLevel::doAction(const std::string& action, const ActionKind& kind)
 {
-	if (action == "toggleGrid")
+	if (kind == ActionKind::pressed)
 	{
-		m_renderGrid = !m_renderGrid;
+		if (action == "toggleGrid")
+		{
+			m_renderGrid = !m_renderGrid;
+		}
 	}
 }
 
@@ -76,7 +89,7 @@ void SceneLevel::sRender()
 
 	if (m_renderGrid)
 	{
-		Vec2  s         = gridSize();
+		Vec2  s         = tileSize();
 		float width     = float(m_game->window().getSize().x);
 		float height    = float(m_game->window().getSize().y);
 		float leftX     = m_game->window().getView().getCenter().x - width / 2.0f;
@@ -96,17 +109,11 @@ void SceneLevel::sRender()
 				std::string xCell = std::to_string((int)x / (int)s.x);
 				std::string yCell = std::to_string((int)y / (int)s.y);
 				m_gridText.setString("(" + xCell + "," + yCell + ")");
-				m_gridText.setPosition(x + 3, height - y - s.y);
+				m_gridText.setPosition(x + 3, height - y);
 				m_game->window().draw(m_gridText);
 			}
 		}
 	}
-}
-
-const Vec2& SceneLevel::gridSize() const
-{
-	float scale = float(m_game->window().getSize().y) / (16 * m_tileSize.y);
-	return m_tileSize * scale;
 }
 
 
@@ -143,7 +150,6 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 		}
 	}
 }
-
 
 void SceneLevel::spawnEntrance(const Vec2& pos)
 {

@@ -30,3 +30,14 @@ void Scene::registerAction(
 {
 	m_actions.registerAction(source, code, action);
 }
+
+bool Scene::handlesAction(const ActionSource& source, const uint16_t& code) const
+{
+	return m_actions.hasAction(source, code);
+}
+
+const std::string&
+Scene::getActionFor(const ActionSource& source, const uint16_t& code) const
+{
+	return m_actions.getAction(source, code);
+}
