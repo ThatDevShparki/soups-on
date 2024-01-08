@@ -202,3 +202,4 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,cmake,clion,macos
+/assets/soups-on.tiled-session

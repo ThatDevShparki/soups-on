@@ -10,7 +10,7 @@ class SceneLevel : public Scene
 
 protected:
 
-	float m_scale    = 1.0f;
+	float m_scale    = 3.0f;
 	Vec2  m_tileSize = { 32.0f, 32.0f };
 
 	bool     m_renderGrid = false;

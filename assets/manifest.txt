@@ -2,3 +2,5 @@ font font fonts/m5x7.ttf
 texture debug sprites/debug.png
 map map_001 maps/map_001._map.csv
 map map_001 maps/map_001._items.csv
+map map_002 maps/map_002._map.csv
+map map_002 maps/map_002._items.csv

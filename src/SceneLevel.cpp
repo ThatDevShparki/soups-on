@@ -20,7 +20,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities
-	initEntitiesFromMap("map_001");
+	initEntitiesFromMap("map_002");
 
 	// register actions
 	registerAction(keyboard, sf::Keyboard::W, "up");
@@ -105,7 +105,8 @@ void SceneLevel::sRender()
 
 const Vec2& SceneLevel::gridSize() const
 {
-	return m_tileSize * m_scale;
+	float scale = float(m_game->window().getSize().y) / (16 * m_tileSize.y);
+	return m_tileSize * scale;
 }
 
 
@@ -124,7 +125,7 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 			{
 				if (e == 2)
 				{
-					spawnTile(pos);
+					spawnTile(pos + Vec2{ 0.0f, 1.0f });
 				}
 			}
 		}
@@ -146,7 +147,8 @@ void SceneLevel::spawnTile(const Vec2& pos)
 
 Vec2 SceneLevel::tileSize() const
 {
-	return m_tileSize * m_scale;
+	float scale = float(m_game->window().getSize().y) / (16 * m_tileSize.y);
+	return m_tileSize * scale;
 }
 
 
