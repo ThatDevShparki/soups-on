@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include <string>
 
+
 class SceneLevel : public Scene
 {
 
@@ -17,12 +18,15 @@ protected:
 	sf::Text m_gridText;
 
 	void sRender() override;
+	void sInput();
+	void sMovement();
 
 	void initEntitiesFromMap(const std::string& mapName);
 	void spawnEntrance(const Vec2& pos);
 	void spawnExit(const Vec2& pos);
 	void spawnTile(const Vec2& pos);
 	void spawnClimbableTile(const Vec2& pos);
+	void spawnPlayer();
 
 public:
 	void init(const std::string& manifestPath);
@@ -35,4 +39,6 @@ public:
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
 	Vec2 tileSize() const;
+
+	std::shared_ptr<Entity> player() const;
 };
