@@ -16,10 +16,12 @@ protected:
 	bool                    m_renderGrid = false;
 	sf::Text                m_gridText;
 	std::shared_ptr<Entity> m_player;
+	float                   offsetX      = 0.0f;
 
 	void sRender() override;
 	void sInput();
 	void sMovement();
+	void sCamera();
 
 	void initEntitiesFromMap(const std::string& mapName);
 	void spawnEntrance(const Vec2& pos);
@@ -40,4 +42,7 @@ public:
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
 	Vec2 tileSize() const;
+
+	float width() const;
+	float height() const;
 };

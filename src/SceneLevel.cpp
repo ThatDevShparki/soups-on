@@ -186,19 +186,20 @@ void SceneLevel::sInput()
 
 void SceneLevel::sMovement()
 {
-	for (auto& entity: m_entities.getEntities())
+	auto& transform = m_player->getComponent<CTransform>();
+	transform.vel += transform.acc;
+	if (transform.vel.mag() > transform.maxVel)
 	{
-		if (entity->hasComponent<CTransform>())
-		{
-			auto& transform = entity->getComponent<CTransform>();
-//			transform.vel += transform.acc;
-//			if (transform.vel.mag() > transform.maxVel)
-//			{
-//				transform.vel = transform.vel.norm() * transform.maxVel;
-//			}
-			transform.pos += transform.vel;
-		}
+		transform.vel = transform.vel.norm() * transform.maxVel;
 	}
+	transform.pos += transform.vel;
+}
+
+void SceneLevel::sCamera()
+{
+//	auto& transform = m_player->getComponent<CTransform>();
+//
+//	if(transform.pos.x > m_game->window().getSize().x)
 }
 
 
@@ -244,7 +245,7 @@ void SceneLevel::spawnEntrance(const Vec2& pos)
 	entrance->addComponent<CTransform>(
 		Vec2{
 			tileSize().x * pos.x,
-			float(m_game->window().getSize().y) - tileSize().y * (pos.y + 1)
+			height() - tileSize().y * (pos.y + 1)
 		}
 	);
 	entrance->addComponent<CShape>(tileSize(), sf::Color(49, 162, 242));
@@ -256,7 +257,7 @@ void SceneLevel::spawnExit(const Vec2& pos)
 	exit->addComponent<CTransform>(
 		Vec2{
 			tileSize().x * pos.x,
-			float(m_game->window().getSize().y) - tileSize().y * (pos.y + 1)
+			height() - tileSize().y * (pos.y + 1)
 		}
 	);
 	exit->addComponent<CShape>(tileSize(), sf::Color(235, 137, 49));
@@ -316,3 +317,12 @@ Vec2 SceneLevel::tileSize() const
 	return m_tileSize * scale;
 }
 
+float SceneLevel::width() const
+{
+	return float(m_game->window().getSize().x);
+}
+
+float SceneLevel::height() const
+{
+	return float(m_game->window().getSize().y);
+}
