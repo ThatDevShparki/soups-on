@@ -75,38 +75,38 @@ void SceneLevel::doAction(const std::string& action, const ActionKind& kind)
 		}
 		else if (action == "up")
 		{
-			player()->getComponent<CInput>().up = true;
+			m_player->getComponent<CInput>().up = true;
 		}
 		else if (action == "down")
 		{
-			player()->getComponent<CInput>().down = true;
+			m_player->getComponent<CInput>().down = true;
 		}
 		else if (action == "right")
 		{
-			player()->getComponent<CInput>().right = true;
+			m_player->getComponent<CInput>().right = true;
 		}
 		else if (action == "left")
 		{
-			player()->getComponent<CInput>().left = true;
+			m_player->getComponent<CInput>().left = true;
 		}
 	}
 	else if (kind == ActionKind::released)
 	{
 		if (action == "up")
 		{
-			player()->getComponent<CInput>().up = false;
+			m_player->getComponent<CInput>().up = false;
 		}
 		else if (action == "down")
 		{
-			player()->getComponent<CInput>().down = false;
+			m_player->getComponent<CInput>().down = false;
 		}
 		else if (action == "right")
 		{
-			player()->getComponent<CInput>().right = false;
+			m_player->getComponent<CInput>().right = false;
 		}
 		else if (action == "left")
 		{
-			player()->getComponent<CInput>().left = false;
+			m_player->getComponent<CInput>().left = false;
 		}
 	}
 }
@@ -158,34 +158,30 @@ void SceneLevel::sRender()
 
 void SceneLevel::sInput()
 {
-	for (auto& entity: m_entities.getEntities())
+
+	auto& input     = m_player->getComponent<CInput>();
+	auto& transform = m_player->getComponent<CTransform>();
+
+	Vec2 diff = { 0.0f, 0.0f };
+	if (input.up)
 	{
-		if (entity->hasComponent<CInput>() && entity->hasComponent<CTransform>())
-		{
-			auto& input     = entity->getComponent<CInput>();
-			auto& transform = entity->getComponent<CTransform>();
-
-			Vec2 diff = { 0.0f, 0.0f };
-			if (input.up)
-			{
-				diff -= { 0.0f, 1.0f };
-			}
-			if (input.down)
-			{
-				diff += { 0.0f, 1.0f };
-			}
-			if (input.right)
-			{
-				diff += { 1.0f, 0.0f };
-			}
-			if (input.left)
-			{
-				diff -= { 1.0f, 0.0f };
-			}
-
-			transform.vel = (diff * transform.maxVel);
-		}
+		diff -= { 0.0f, 1.0f };
 	}
+	if (input.down)
+	{
+		diff += { 0.0f, 1.0f };
+	}
+	if (input.right)
+	{
+		diff += { 1.0f, 0.0f };
+	}
+	if (input.left)
+	{
+		diff -= { 1.0f, 0.0f };
+	}
+
+	transform.vel = (diff * transform.maxVel);
+
 }
 
 void SceneLevel::sMovement()
@@ -310,6 +306,7 @@ void SceneLevel::spawnPlayer()
 		Vec2{ 0.75f * tileSize().x, 1.25f * tileSize().y }, sf::Color::Magenta
 	);
 	player->addComponent<CInput>();
+	m_player = player;
 }
 
 
@@ -319,7 +316,3 @@ Vec2 SceneLevel::tileSize() const
 	return m_tileSize * scale;
 }
 
-std::shared_ptr<Entity> SceneLevel::player() const
-{
-	return m_entities.getEntities("player")[0];
-}

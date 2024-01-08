@@ -11,11 +11,11 @@ class SceneLevel : public Scene
 
 protected:
 
-	float m_scale    = 3.0f;
-	Vec2  m_tileSize = { 32.0f, 32.0f };
-
-	bool     m_renderGrid = false;
-	sf::Text m_gridText;
+	float                   m_scale      = 3.0f;
+	Vec2                    m_tileSize   = { 32.0f, 32.0f };
+	bool                    m_renderGrid = false;
+	sf::Text                m_gridText;
+	std::shared_ptr<Entity> m_player;
 
 	void sRender() override;
 	void sInput();
@@ -28,6 +28,7 @@ protected:
 	void spawnClimbableTile(const Vec2& pos);
 	void spawnPlayer();
 
+
 public:
 	void init(const std::string& manifestPath);
 
@@ -39,6 +40,4 @@ public:
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
 	Vec2 tileSize() const;
-
-	std::shared_ptr<Entity> player() const;
 };
