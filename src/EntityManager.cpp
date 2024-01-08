@@ -10,6 +10,7 @@ void EntityManager::update()
 		m_entities.push_back(entity);
 		m_entityMap[entity->tag()].push_back(entity);
 	}
+	m_entitiesToAdd.clear();
 
 	// Remove all entities that are no longer alive
 	removeDeadEntities(m_entities);

@@ -299,7 +299,7 @@ void SceneLevel::spawnPlayer()
 		Vec2{ 0.0f, 0.0f },
 		Vec2{ 0.0f, 0.0f },
 		0.0f,
-		5.0f / 60.0f,
+		10.0f,
 		0.0f
 	);
 	player->addComponent<CShape>(
