@@ -22,7 +22,10 @@ protected:
 	[[nodiscard]] const Vec2& gridSize() const;
 
 	void initEntitiesFromMap(const std::string& mapName);
+	void spawnEntrance(const Vec2& pos);
+	void spawnExit(const Vec2& pos);
 	void spawnTile(const Vec2& pos);
+	void spawnClimbableTile(const Vec2& pos);
 
 public:
 	void init(const std::string& manifestPath);

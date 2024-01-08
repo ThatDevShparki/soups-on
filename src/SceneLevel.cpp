@@ -123,13 +123,50 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 
 			for (const auto& e: layer)
 			{
-				if (e == 2)
+				if (e == 0)
 				{
-					spawnTile(pos + Vec2{ 0.0f, 1.0f });
+					spawnEntrance(pos);
+				}
+				else if (e == 1)
+				{
+					spawnExit(pos);
+				}
+				else if (e == 2)
+				{
+					spawnTile(pos);
+				}
+				else if (e == 3)
+				{
+					spawnClimbableTile(pos);
 				}
 			}
 		}
 	}
+}
+
+
+void SceneLevel::spawnEntrance(const Vec2& pos)
+{
+	auto entrance = m_entities.addEntity("entrance");
+	entrance->addComponent<CTransform>(
+		Vec2{
+			tileSize().x * pos.x,
+			float(m_game->window().getSize().y) - tileSize().y * (pos.y + 1)
+		}
+	);
+	entrance->addComponent<CShape>(tileSize(), sf::Color(49, 162, 242));
+}
+
+void SceneLevel::spawnExit(const Vec2& pos)
+{
+	auto exit = m_entities.addEntity("entrance");
+	exit->addComponent<CTransform>(
+		Vec2{
+			tileSize().x * pos.x,
+			float(m_game->window().getSize().y) - tileSize().y * (pos.y + 1)
+		}
+	);
+	exit->addComponent<CShape>(tileSize(), sf::Color(235, 137, 49));
 }
 
 void SceneLevel::spawnTile(const Vec2& pos)
@@ -138,10 +175,22 @@ void SceneLevel::spawnTile(const Vec2& pos)
 	tile->addComponent<CTransform>(
 		Vec2{
 			tileSize().x * pos.x,
-			float(m_game->window().getSize().y) - tileSize().y * pos.y
+			float(m_game->window().getSize().y) - tileSize().y * (pos.y + 1)
 		}
 	);
 	tile->addComponent<CShape>(tileSize(), sf::Color::Black);
+}
+
+void SceneLevel::spawnClimbableTile(const Vec2& pos)
+{
+	auto tile = m_entities.addEntity("tile");
+	tile->addComponent<CTransform>(
+		Vec2{
+			tileSize().x * pos.x,
+			float(m_game->window().getSize().y) - tileSize().y * (pos.y + 1)
+		}
+	);
+	tile->addComponent<CShape>(tileSize(), sf::Color(68, 137, 26));
 }
 
 
