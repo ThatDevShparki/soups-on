@@ -16,7 +16,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	// initialize placeholders
 	m_assets = AssetManager(manifestPath);
 
-	m_gridText.setCharacterSize(ceil(9 * m_scale));
+	m_gridText.setCharacterSize(9);
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities (updates entities!)
@@ -56,6 +56,7 @@ void SceneLevel::update()
 	sRender();
 	sInput();
 	sMovement();
+	sCamera();
 
 	m_currentFrame++;
 }
@@ -120,7 +121,14 @@ void SceneLevel::sRender()
 
 		if (transform.has && shape.has)
 		{
-			shape.shape.setPosition(transform.pos.x, transform.pos.y);
+			if (e->tag() != "player")
+			{
+				shape.shape.setPosition(transform.pos.x - m_offset, transform.pos.y);
+			}
+			else
+			{
+				shape.shape.setPosition(transform.pos.x, transform.pos.y);
+			}
 			shape.shape.setOutlineColor(shape.color);
 			shape.shape.setFillColor(shape.color);
 			m_game->window().draw(shape.shape);
@@ -197,9 +205,30 @@ void SceneLevel::sMovement()
 
 void SceneLevel::sCamera()
 {
-//	auto& transform = m_player->getComponent<CTransform>();
-//
-//	if(transform.pos.x > m_game->window().getSize().x)
+	auto& transform = m_player->getComponent<CTransform>();
+	auto& shape     = m_player->getComponent<CShape>();
+	auto& map       = m_assets.getMap(m_map);
+	float playerMid  = transform.pos.x + shape.shape.getSize().x / 2;
+	float windowMid  = width() / 2;
+	float maxOffset  = float(map.width()) * tileSize().x - width();
+	float diffOffset = playerMid - windowMid;
+
+	if (diffOffset > 0)
+	{
+		if (m_offset < maxOffset)
+		{
+			m_offset += diffOffset;
+			transform.pos.x -= diffOffset;
+		}
+	}
+	else if (diffOffset < 0)
+	{
+		if (m_offset > 0)
+		{
+			m_offset += diffOffset;
+			transform.pos.x -= diffOffset;
+		}
+	}
 }
 
 
@@ -237,6 +266,7 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 	}
 
 	m_entities.update();
+	m_map = mapName;
 }
 
 void SceneLevel::spawnEntrance(const Vec2& pos)

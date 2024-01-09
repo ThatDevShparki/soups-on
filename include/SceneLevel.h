@@ -10,13 +10,13 @@ class SceneLevel : public Scene
 {
 
 protected:
-
-	float                   m_scale      = 3.0f;
+	
 	Vec2                    m_tileSize   = { 32.0f, 32.0f };
 	bool                    m_renderGrid = false;
 	sf::Text                m_gridText;
 	std::shared_ptr<Entity> m_player;
-	float                   offsetX      = 0.0f;
+	float                   m_offset     = 0.0f;
+	std::string             m_map;
 
 	void sRender() override;
 	void sInput();
