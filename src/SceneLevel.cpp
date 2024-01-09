@@ -20,7 +20,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities (updates entities!)
-	initEntitiesFromMap("map_002");
+	initEntitiesFromMap("map_003");
 
 	// register actions
 	registerAction(
@@ -218,6 +218,10 @@ void SceneLevel::sCamera()
 		if (m_offset < maxOffset)
 		{
 			m_offset += diffOffset;
+			if (m_offset > maxOffset)
+			{
+				m_offset = maxOffset;
+			}
 			transform.pos.x -= diffOffset;
 		}
 	}
@@ -226,6 +230,10 @@ void SceneLevel::sCamera()
 		if (m_offset > 0)
 		{
 			m_offset += diffOffset;
+			if (m_offset < 0)
+			{
+				m_offset = 0;
+			}
 			transform.pos.x -= diffOffset;
 		}
 	}
@@ -343,7 +351,7 @@ void SceneLevel::spawnPlayer()
 
 Vec2 SceneLevel::tileSize() const
 {
-	float scale = float(m_game->window().getSize().y) / (16 * m_tileSize.y);
+	float scale = float(m_game->window().getSize().y) / (32 * m_tileSize.y);
 	return m_tileSize * scale;
 }
 

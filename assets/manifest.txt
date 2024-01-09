@@ -4,4 +4,4 @@ map map_001 maps/map_001._map.csv
 map map_001 maps/map_001._items.csv
 map map_002 maps/map_002._map.csv
 map map_002 maps/map_002._items.csv
-map map_gay maps/gaymap.csv
+map map_003 maps/map_003.csv
