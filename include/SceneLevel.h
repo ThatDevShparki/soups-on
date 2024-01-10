@@ -41,6 +41,7 @@ public:
 	void quit() override;
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
+	float scale() const;
 	Vec2 tileSize() const;
 
 	float width() const;

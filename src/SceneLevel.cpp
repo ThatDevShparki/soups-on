@@ -306,6 +306,7 @@ void SceneLevel::spawnTile(size_t i, const Vec2& pos)
 		}
 	);
 	tile->addComponent<CSprite>(m_assets.getSprite("level_debug", i));
+	tile->getComponent<CSprite>().sprite.scale(scale(), scale());
 }
 
 void SceneLevel::spawnClimbableTile(const Vec2& pos)
@@ -339,15 +340,21 @@ void SceneLevel::spawnPlayer()
 	player->addComponent<CSprite>(
 		m_assets.getSprite("player_debug", 0)
 	);
+	player->getComponent<CSprite>().sprite.scale(scale(), scale());
 	player->addComponent<CInput>();
 	m_player = player;
 }
 
 
+float SceneLevel::scale() const
+{
+	return float(m_game->window().getSize().y) / (32 * m_tileSize.y);
+}
+
 Vec2 SceneLevel::tileSize() const
 {
-	float scale = float(m_game->window().getSize().y) / (32 * m_tileSize.y);
-	return m_tileSize * scale;
+
+	return m_tileSize * scale();
 }
 
 float SceneLevel::width() const
