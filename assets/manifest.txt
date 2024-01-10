@@ -1,7 +1,11 @@
 font font fonts/m5x7.ttf
-texture debug sprites/debug.png
-map map_001 maps/map_001._map.csv
-map map_001 maps/map_001._items.csv
-map map_002 maps/map_002._map.csv
-map map_002 maps/map_002._items.csv
-map map_003 maps/map_003.csv
+texture level_debug sprites/level_debug.png
+texture player_debug sprites/player_debug.png
+texture textures_background_debug sprites/textures_background_debug.png
+texture textures_collision_debug sprites/textures_collision_debug.png
+texture textures_foreground_debug sprites/textures_foreground_debug.png
+map map_001 maps/map_001_background.csv
+map map_001 maps/map_001_backgroundDecor.csv
+map map_001 maps/map_001_map.csv
+map map_001 maps/map_001_items.csv
+map map_001 maps/map_001_foreground.csv

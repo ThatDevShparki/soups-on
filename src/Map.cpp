@@ -157,7 +157,7 @@ std::vector<int> Map::at(const Vec2& pos) const
 	{
 		layer.push_back(at(pos, i));
 	}
-	
+
 	return layer;
 }
 
@@ -217,7 +217,7 @@ void Map::print() const
 			std::stringstream row;
 			for (int          i = 0; i < m_width; i++)
 			{
-				row << std::setw(3)
+				row << std::setw(4)
 					<< std::to_string(m_data[index]);
 				index++;
 			}

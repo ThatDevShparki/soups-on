@@ -20,7 +20,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities (updates entities!)
-	initEntitiesFromMap("map_003");
+	initEntitiesFromMap("map_001");
 
 	// register actions
 	registerAction(
@@ -253,8 +253,9 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 
 			for (const auto& e: layer)
 			{
-				if (e == 0)
+				if (e == 139)
 				{
+					std::cout << "THIS IS AN ENTRANCE" << std::endl;
 					spawnEntrance(pos);
 				}
 				else if (e == 1)
@@ -275,6 +276,8 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 
 	m_entities.update();
 	m_map = mapName;
+
+	std::cout << "Loaded all entities from map: " + mapName << std::endl;
 }
 
 void SceneLevel::spawnEntrance(const Vec2& pos)

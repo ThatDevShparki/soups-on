@@ -89,7 +89,6 @@ void AssetManager::addMap(
 	}
 
 	std::cout << "Loaded map " + tag + ": " << std::endl;
-	m_maps[tag].print();
 }
 
 
