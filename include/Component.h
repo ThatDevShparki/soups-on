@@ -92,3 +92,16 @@ public:
 
 	CInput() = default;
 };
+
+class CSprite : public Component
+{
+public:
+	sf::Sprite sprite;
+
+	CSprite() = default;
+
+	explicit CSprite(const sf::Sprite& sprite)
+		: sprite(sprite)
+	{
+	}
+};

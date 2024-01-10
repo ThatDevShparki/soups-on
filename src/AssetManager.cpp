@@ -37,6 +37,12 @@ void AssetManager::init(const std::string& manifestPath)
 			file >> n >> p;
 			addTexture(n, "assets/" + p);
 		}
+		else if (head == "sprites")
+		{
+			std::string n, w, h, p;
+			file >> n >> w >> h >> p;
+			addSprites(n, std::stoi(w), std::stoi(h), "assets/" + p);
+		}
 		else if (head == "map")
 		{
 			std::string n, p;
@@ -58,6 +64,41 @@ void AssetManager::addTexture(const std::string& tag, const std::string& path)
 	}
 	m_textures[tag] = texture;
 	std::cout << "Loaded texture " + tag + " from " + path << std::endl;
+}
+
+void AssetManager::addSprites(
+	const std::string& tag,
+	size_t width,
+	size_t height,
+	const std::string& path
+)
+{
+	addTexture(tag, path);
+
+	std::vector<sf::Sprite> sprites;
+	auto& texture = getTexture(tag);
+	auto size = texture.getSize();
+
+	if (size.x % width != 0 || size.y % height != 0)
+	{
+		std::cerr << "Sizes for sprites do not align with texture size" << std::endl;
+		exit(-1);
+	}
+
+	for (int j = 0; j < size.y; j += int(width))
+	{
+		for (int i = 0; i < size.x; i += int(height))
+		{
+			sprites.emplace_back(
+				texture,
+				sf::IntRect(i, j, int(width), int(height))
+			);
+		}
+	}
+
+	m_sprites[tag] = sprites;
+	std::cout << "Loaded " + std::to_string(sprites.size()) + " sprites " + tag +
+				 " from " + path << std::endl;
 }
 
 void AssetManager::addFont(const std::string& tag, const std::string& path)
@@ -97,6 +138,11 @@ const TextureMap& AssetManager::textures() const
 	return m_textures;
 }
 
+const SpriteMap& AssetManager::sprites() const
+{
+	return m_sprites;
+}
+
 const FontMap& AssetManager::fonts() const
 {
 	return m_fonts;
@@ -111,6 +157,11 @@ const MapMap& AssetManager::maps() const
 const sf::Texture& AssetManager::getTexture(const std::string& tag) const
 {
 	return m_textures.at(tag);
+}
+
+const sf::Sprite& AssetManager::getSprite(const std::string& tag, size_t index) const
+{
+	return m_sprites.at(tag)[index];
 }
 
 const sf::Font& AssetManager::getFont(const std::string& tag) const

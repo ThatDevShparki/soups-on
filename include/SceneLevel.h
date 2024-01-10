@@ -10,7 +10,7 @@ class SceneLevel : public Scene
 {
 
 protected:
-	
+
 	Vec2                    m_tileSize   = { 32.0f, 32.0f };
 	bool                    m_renderGrid = false;
 	sf::Text                m_gridText;
@@ -26,7 +26,7 @@ protected:
 	void initEntitiesFromMap(const std::string& mapName);
 	void spawnEntrance(const Vec2& pos);
 	void spawnExit(const Vec2& pos);
-	void spawnTile(const Vec2& pos);
+	void spawnTile(const size_t i, const Vec2& pos);
 	void spawnClimbableTile(const Vec2& pos);
 	void spawnPlayer();
 

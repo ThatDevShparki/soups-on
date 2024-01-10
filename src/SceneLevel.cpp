@@ -117,21 +117,22 @@ void SceneLevel::sRender()
 	for (const auto& e: m_entities.getEntities())
 	{
 		auto& transform = e->getComponent<CTransform>();
-		auto& shape     = e->getComponent<CShape>();
+		auto& sprite    = e->getComponent<CSprite>();
 
-		if (transform.has && shape.has)
+		if (transform.has && sprite.has)
 		{
 			if (e->tag() != "player")
 			{
-				shape.shape.setPosition(transform.pos.x - m_offset, transform.pos.y);
+				sprite.sprite.setPosition(
+					transform.pos.x - m_offset,
+					transform.pos.y
+				);
 			}
 			else
 			{
-				shape.shape.setPosition(transform.pos.x, transform.pos.y);
+				sprite.sprite.setPosition(transform.pos.x, transform.pos.y);
 			}
-			shape.shape.setOutlineColor(shape.color);
-			shape.shape.setFillColor(shape.color);
-			m_game->window().draw(shape.shape);
+			m_game->window().draw(sprite.sprite);
 		}
 	}
 
@@ -255,20 +256,11 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 			{
 				if (e == 139)
 				{
-					std::cout << "THIS IS AN ENTRANCE" << std::endl;
 					spawnEntrance(pos);
 				}
-				else if (e == 1)
+				else if (e != -1)
 				{
-					spawnExit(pos);
-				}
-				else if (e == 2)
-				{
-					spawnTile(pos);
-				}
-				else if (e == 3)
-				{
-					spawnClimbableTile(pos);
+					spawnTile(e, pos);
 				}
 			}
 		}
@@ -304,7 +296,7 @@ void SceneLevel::spawnExit(const Vec2& pos)
 	exit->addComponent<CShape>(tileSize(), sf::Color(235, 137, 49));
 }
 
-void SceneLevel::spawnTile(const Vec2& pos)
+void SceneLevel::spawnTile(size_t i, const Vec2& pos)
 {
 	auto tile = m_entities.addEntity("tile");
 	tile->addComponent<CTransform>(
@@ -313,7 +305,7 @@ void SceneLevel::spawnTile(const Vec2& pos)
 			float(m_game->window().getSize().y) - tileSize().y * (pos.y + 1)
 		}
 	);
-	tile->addComponent<CShape>(tileSize(), sf::Color::Black);
+	tile->addComponent<CSprite>(m_assets.getSprite("level_debug", i));
 }
 
 void SceneLevel::spawnClimbableTile(const Vec2& pos)

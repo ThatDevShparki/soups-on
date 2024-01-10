@@ -8,7 +8,8 @@ typedef std::tuple<
 	CTransform,
 	CBoundingBox,
 	CShape,
-	CInput
+	CInput,
+	CSprite
 > ComponentTuple;
 
 class Entity
