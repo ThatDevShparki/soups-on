@@ -39,7 +39,7 @@ void Game::run()
 
 void Game::update()
 {
-	m_window.clear(sf::Color(88, 181, 167));
+	m_window.clear(sf::Color::White);
 
 
 	sUserInput();
