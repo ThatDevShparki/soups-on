@@ -336,8 +336,8 @@ void SceneLevel::spawnPlayer()
 		10.0f,
 		0.0f
 	);
-	player->addComponent<CShape>(
-		Vec2{ 0.75f * tileSize().x, 1.25f * tileSize().y }, sf::Color::Magenta
+	player->addComponent<CSprite>(
+		m_assets.getSprite("player_debug", 0)
 	);
 	player->addComponent<CInput>();
 	m_player = player;

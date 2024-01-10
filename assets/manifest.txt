@@ -1,6 +1,6 @@
 font font fonts/m5x7.ttf
 sprites level_debug 32 32 sprites/level_debug.png
-texture player_debug sprites/player_debug.png
+sprites player_debug 24 48 sprites/player_debug.png
 texture textures_background_debug sprites/textures_background_debug.png
 texture textures_collision_debug sprites/textures_collision_debug.png
 texture textures_foreground_debug sprites/textures_foreground_debug.png
