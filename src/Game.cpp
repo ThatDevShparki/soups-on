@@ -22,6 +22,7 @@ void Game::init(const std::string& manifestPath)
 		"Soups On"
 	);
 	m_window.setFramerateLimit(m_targetFps);
+	m_view = m_window.getDefaultView();
 
 	// load assets
 	m_assets = AssetManager(manifestPath);
@@ -79,6 +80,8 @@ void Game::sUserInput()
 			quit();
 		}
 
+		// check for global events
+
 		if (event.type == sf::Event::KeyPressed)
 		{
 			if (event.key.code == sf::Keyboard::Escape)
@@ -92,6 +95,21 @@ void Game::sUserInput()
 				m_showDelta = !m_showDelta;
 			}
 		}
+
+		if (event.type == sf::Event::Resized)
+		{
+			m_view = sf::View(
+				{
+					0.0f,
+					0.0f,
+					float(event.size.width),
+					float(event.size.height)
+				}
+			);
+			m_window.setView(m_view);
+		}
+
+		// pass keyboard events to current scene
 
 		if (event.type == sf::Event::KeyPressed ||
 			event.type == sf::Event::KeyReleased)

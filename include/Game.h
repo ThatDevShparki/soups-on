@@ -16,10 +16,12 @@ typedef std::map<std::string, std::shared_ptr<Scene>> SceneMap;
 class Game
 {
 	sf::RenderWindow m_window;
-	AssetManager     m_assets;
-	bool             m_running = true;
-	SceneMap         m_scenes;
-	std::string      m_currentScene;
+	sf::View         m_view;
+
+	AssetManager m_assets;
+	bool         m_running = true;
+	SceneMap     m_scenes;
+	std::string  m_currentScene;
 
 	sf::Clock m_clock;
 	float     m_delta;
