@@ -29,10 +29,6 @@ void Game::init(const std::string& manifestPath)
 
 	// register scene
 	changeScene("level", std::make_shared<SceneLevel>(this, manifestPath));
-
-	// setup view
-	m_window.setView(m_view);
-
 }
 
 
@@ -70,6 +66,7 @@ void Game::update()
 		sShowDebug();
 	}
 
+	m_window.setView(m_view);
 	m_window.display();
 }
 
