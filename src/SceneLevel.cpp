@@ -346,6 +346,8 @@ void SceneLevel::onResizeView(sf::View& view)
 	float height      = m_tileSize.y * m_tileZoom;
 	float width       = height / aspectRatio;
 	view.setSize({ width, height });
+
+	sCamera(); // make sure the camera is located correctly
 }
 
 float SceneLevel::width() const
