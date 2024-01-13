@@ -47,7 +47,6 @@ public:
 	void quit();
 	void run();
 
-	sf::RenderWindow& window();
 	bool isRunning() const;
 
 	void drawLine(const Vec2& a, const Vec2& b)
@@ -58,6 +57,11 @@ public:
 		};
 		m_window.draw(line, 2, sf::Lines);
 	}
+
+	// window management
+	sf::RenderWindow& window();
+	sf::View& view();
+
 
 	// time management
 	float delta() const;

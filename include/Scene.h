@@ -48,5 +48,6 @@ public:
 	virtual void update() = 0;
 	virtual void quit() = 0;
 	virtual void doAction(const std::string& action, const ActionKind& kind) = 0;
+	virtual void onResizeView(sf::View& view) = 0;
 
 };

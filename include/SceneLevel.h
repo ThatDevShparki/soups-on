@@ -11,12 +11,12 @@ class SceneLevel : public Scene
 
 protected:
 
-	Vec2                    m_tileSize   = { 32.0f, 32.0f };
-	bool                    m_renderGrid = false;
 	sf::Text                m_gridText;
 	std::shared_ptr<Entity> m_player;
-	float                   m_offset     = 0.0f;
 	std::string             m_map;
+	bool                    m_renderGrid = false;
+	Vec2                    m_tileSize   = { 32.0f, 32.0f };
+	float                   m_tileZoom   = 18.0f;
 
 	void sRender() override;
 	void sInput();
@@ -41,8 +41,7 @@ public:
 	void quit() override;
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
-	float scale() const;
-	Vec2 tileSize() const;
+	void onResizeView(sf::View& view) override;
 
 	float width() const;
 	float height() const;

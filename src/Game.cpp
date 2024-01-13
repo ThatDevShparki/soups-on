@@ -106,6 +106,9 @@ void Game::sUserInput()
 					float(event.size.height)
 				}
 			);
+
+			currentScene()->onResizeView(m_view);
+
 			m_window.setView(m_view);
 		}
 
@@ -213,6 +216,12 @@ sf::RenderWindow& Game::window()
 {
 	return m_window;
 }
+
+sf::View& Game::view()
+{
+	return m_view;
+}
+
 
 bool Game::isRunning() const
 {
