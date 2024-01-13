@@ -196,12 +196,16 @@ void SceneLevel::sInput()
 void SceneLevel::sMovement()
 {
 	auto& transform = m_player->getComponent<CTransform>();
+
 	transform.vel += transform.acc;
 	if (transform.vel.mag() > transform.maxVel)
 	{
 		transform.vel = transform.vel.norm() * transform.maxVel;
 	}
+	transform.vel   = transform.vel * m_game->delta();
+
 	transform.pos += transform.vel;
+
 }
 
 void SceneLevel::sCamera()
@@ -334,7 +338,7 @@ void SceneLevel::spawnPlayer()
 		Vec2{ 0.0f, 0.0f },
 		Vec2{ 0.0f, 0.0f },
 		0.0f,
-		10.0f,
+		600.0f,
 		0.0f
 	);
 	player->addComponent<CSprite>(
