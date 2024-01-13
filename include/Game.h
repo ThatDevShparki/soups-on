@@ -4,6 +4,7 @@
 
 #include "Vec2.h"
 #include "Scene.h"
+#include "AssetManager.h"
 
 #include <string>
 #include <map>
@@ -15,15 +16,26 @@ typedef std::map<std::string, std::shared_ptr<Scene>> SceneMap;
 class Game
 {
 	sf::RenderWindow m_window;
+	AssetManager     m_assets;
 	bool             m_running = true;
 	SceneMap         m_scenes;
 	std::string      m_currentScene;
+
+	sf::Clock m_clock;
+	float     m_delta;
+	float     m_fps;
+	size_t    m_frames     = 0;
+	float     m_avgDelta   = 0;
+	float     m_totalDelta = 0;
+	size_t    m_targetFps  = 120;
+	bool      m_showDelta  = false;
 
 
 	void init(const std::string& path);
 	void update();
 
 	void sUserInput();
+	void sShowDebug();
 
 public:
 
@@ -45,6 +57,8 @@ public:
 		m_window.draw(line, 2, sf::Lines);
 	}
 
+	// time management
+	float delta() const;
 
 	// scene management
 	[[nodiscard]] std::shared_ptr<Scene> currentScene() const;
