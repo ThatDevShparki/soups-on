@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "SFML/Graphics.hpp"
 
 class Vec2
 {
@@ -11,6 +12,7 @@ public:
 
 	Vec2();
 	Vec2(float x, float y);
+	explicit Vec2(const sf::Vector2f& v);
 
 	[[nodiscard]] float theta() const;
 
@@ -32,4 +34,6 @@ public:
 	[[nodiscard]] float dist(const Vec2& rhs);
 
 	[[nodiscard]] std::string toString() const;
+
+	[[nodiscard]] explicit operator sf::Vector2f() const;
 };

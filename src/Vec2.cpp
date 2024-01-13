@@ -9,6 +9,11 @@ Vec2::Vec2(float x, float y)
 {
 }
 
+Vec2::Vec2(const sf::Vector2f& v)
+	: x(v.x), y(v.y)
+{
+}
+
 
 float Vec2::theta() const
 {
@@ -93,3 +98,9 @@ std::string Vec2::toString() const
 {
 	return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 }
+
+Vec2::operator sf::Vector2f() const
+{
+	return { x, y };
+}
+
