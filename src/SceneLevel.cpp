@@ -20,7 +20,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities (updates entities!)
-	initEntitiesFromMap("map_001");
+	initEntitiesFromMap("marioMap");
 
 	// register actions
 	registerAction(
@@ -201,11 +201,6 @@ void SceneLevel::sCamera()
 		viewOrigin.y = map.height() * m_tileSize.y - viewSize.y / 2;
 	}
 
-	std::cout
-		<< std::to_string(viewOrigin.x) + ", " + std::to_string(viewOrigin.y) + "-" +
-		   std::to_string(map.height() * m_tileSize.y - viewSize.y / 2)
-		<< std::endl;
-
 	auto& view = m_game->view();
 	view.setCenter(sf::Vector2f(viewOrigin));
 }
@@ -228,7 +223,7 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 
 			for (const auto& e: layer)
 			{
-				if (e == 139)
+				if (e == 173)
 				{
 					spawnEntrance(tilePos);
 				}
@@ -257,7 +252,7 @@ void SceneLevel::spawnTile(size_t i, const Vec2& pos)
 {
 	auto tile = m_entities.addEntity("tile");
 	tile->addComponent<CTransform>(pos);
-	tile->addComponent<CSprite>(m_assets.getSprite("level_debug", i));
+	tile->addComponent<CSprite>(m_assets.getSprite("background", i));
 }
 
 void SceneLevel::spawnPlayer()
@@ -273,11 +268,11 @@ void SceneLevel::spawnPlayer()
 		Vec2{ 0.0f, 0.0f },
 		Vec2{ 0.0f, 0.0f },
 		0.0f,
-		600.0f,
+		300.0f,
 		0.0f
 	);
 	player->addComponent<CSprite>(
-		m_assets.getSprite("player_debug", 0)
+		m_assets.getSprite("dude", 0)
 	);
 	player->addComponent<CInput>();
 	m_player = player;

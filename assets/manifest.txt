@@ -9,3 +9,9 @@ map map_001 maps/map_001_backgroundDecor.csv
 map map_001 maps/map_001_map.csv
 map map_001 maps/map_001_items.csv
 map map_001 maps/map_001_foreground.csv
+map awesomeMap maps/map_002_items.csv
+map awesomeMap maps/map_002_map.csv
+map marioMap maps/map_003_items.csv
+map marioMap maps/map_003_map.csv
+sprites background 32 32 sprites/SO-BKGTILESET.png
+sprites dude 32 48 sprites/SO-GUYRUNNING.png
