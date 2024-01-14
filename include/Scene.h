@@ -8,7 +8,7 @@
 
 class Game;
 
-class Scene
+class Scene : public sf::Drawable
 {
 
 protected:
@@ -24,7 +24,7 @@ protected:
 	AssetManager  m_assets;
 	ActionManager m_actions;
 
-	virtual void sRender() = 0;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 
 public:
 

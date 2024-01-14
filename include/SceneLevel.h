@@ -18,7 +18,8 @@ protected:
 	Vec2                    m_tileSize   = { 32.0f, 32.0f };
 	float                   m_tileZoom   = 12.0f;
 
-	void sRender() override;
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
 	void sInput();
 	void sMovement(float delta);
 	void sCamera();

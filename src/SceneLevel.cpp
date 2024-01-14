@@ -55,14 +55,29 @@ void SceneLevel::init(const std::string& manifestPath)
 void SceneLevel::update(float delta)
 {
 	m_entities.update();
-
-	sRender();
+	
 	sInput();
 	sMovement(delta);
 	sCamera();
 
 	m_currentFrame++;
 }
+
+void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	for (const auto& e: m_entities.getEntities())
+	{
+		auto& transform = e->getComponent<CTransform>();
+		auto& sprite    = e->getComponent<CSprite>();
+
+		if (transform.has && sprite.has)
+		{
+			sprite.sprite.setPosition(transform.pos.x, transform.pos.y);
+			target.draw(sprite.sprite);
+		}
+	}
+}
+
 
 void SceneLevel::quit()
 {
@@ -111,21 +126,6 @@ void SceneLevel::doAction(const std::string& action, const ActionKind& kind)
 		else if (action == "left")
 		{
 			m_player->getComponent<CInput>().left = false;
-		}
-	}
-}
-
-void SceneLevel::sRender()
-{
-	for (const auto& e: m_entities.getEntities())
-	{
-		auto& transform = e->getComponent<CTransform>();
-		auto& sprite    = e->getComponent<CSprite>();
-
-		if (transform.has && sprite.has)
-		{
-			sprite.sprite.setPosition(transform.pos.x, transform.pos.y);
-			m_game->window().draw(sprite.sprite);
 		}
 	}
 }

@@ -62,6 +62,7 @@ void Game::update()
 	// render scene content
 	m_window.setView(currentScene()->view());
 	currentScene()->update(m_delta);
+	m_window.draw(*currentScene());
 
 	// render game content
 	m_window.setView(m_view);
