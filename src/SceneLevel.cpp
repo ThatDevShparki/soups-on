@@ -128,33 +128,6 @@ void SceneLevel::sRender()
 			m_game->window().draw(sprite.sprite);
 		}
 	}
-
-	if (m_renderGrid)
-	{
-		float width     = float(m_game->window().getSize().x);
-		float height    = float(m_game->window().getSize().y);
-		float leftX     = m_game->window().getView().getCenter().x - width / 2.0f;
-		float rightX    = leftX + width + m_tileSize.x;
-		float nextGridX = leftX - float(int(leftX) % int(m_tileSize.x));
-
-		for (float x = nextGridX; x <= rightX; x += m_tileSize.x)
-		{
-			m_game->drawLine({ x, 0 }, { x, height });
-		}
-		for (float y = 0; y < height; y += m_tileSize.y)
-		{
-			m_game->drawLine({ 0, y }, { width, y });
-
-			for (float x = nextGridX; x < rightX; x += m_tileSize.x)
-			{
-				std::string xCell = std::to_string((int)x / (int)m_tileSize.x);
-				std::string yCell = std::to_string((int)y / (int)m_tileSize.y);
-				m_gridText.setString("(" + xCell + "," + yCell + ")");
-				m_gridText.setPosition(x + 3, height - y);
-				m_game->window().draw(m_gridText);
-			}
-		}
-	}
 }
 
 void SceneLevel::sInput()
@@ -202,38 +175,39 @@ void SceneLevel::sMovement()
 
 void SceneLevel::sCamera()
 {
-//	auto& transform = m_player->getComponent<CTransform>();
-//	auto& shape     = m_player->getComponent<CShape>();
-//	auto& map       = m_assets.getMap(m_map);
-//	float playerMid  = transform.pos.x + shape.shape.getSize().x / 2;
-//	float windowMid  = width() / 2;
-//	float maxOffset  = float(map.width()) * m_tileSize.x - width();
-//	float diffOffset = playerMid - windowMid;
-//
-//	if (diffOffset > 0)
-//	{
-//		if (m_offset < maxOffset)
-//		{
-//			m_offset += diffOffset;
-//			if (m_offset > maxOffset)
-//			{
-//				m_offset = maxOffset;
-//			}
-//			transform.pos.x -= diffOffset;
-//		}
-//	}
-//	else if (diffOffset < 0)
-//	{
-//		if (m_offset > 0)
-//		{
-//			m_offset += diffOffset;
-//			if (m_offset < 0)
-//			{
-//				m_offset = 0;
-//			}
-//			transform.pos.x -= diffOffset;
-//		}
-//	}
+	auto& transform = m_player->getComponent<CTransform>();
+	auto& sprite    = m_player->getComponent<CSprite>();
+	auto& map       = m_assets.getMap(m_map);
+
+	Vec2 viewSize   = Vec2(m_game->view().getSize());
+	Vec2 viewOrigin = Vec2(transform.pos) +
+					  Vec2(sprite.sprite.getGlobalBounds().getSize()) / 2;
+
+	if (viewOrigin.x < viewSize.x / 2)
+	{
+		viewOrigin.x = viewSize.x / 2;
+	}
+	else if (viewOrigin.x > map.width() * m_tileSize.x - viewSize.x / 2)
+	{
+		viewOrigin.x = map.width() * m_tileSize.x - viewSize.x / 2;
+	}
+
+	if (viewOrigin.y < viewSize.y / 2)
+	{
+		viewOrigin.y = viewSize.y / 2;
+	}
+	else if (viewOrigin.y > map.height() * m_tileSize.y - viewSize.y / 2)
+	{
+		viewOrigin.y = map.height() * m_tileSize.y - viewSize.y / 2;
+	}
+
+	std::cout
+		<< std::to_string(viewOrigin.x) + ", " + std::to_string(viewOrigin.y) + "-" +
+		   std::to_string(map.height() * m_tileSize.y - viewSize.y / 2)
+		<< std::endl;
+
+	auto& view = m_game->view();
+	view.setCenter(sf::Vector2f(viewOrigin));
 }
 
 
@@ -246,17 +220,21 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 		for (int i = 0; i < map.width(); i++)
 		{
 			const Vec2 pos{ float(i), float(j) };
+			const Vec2 tilePos{
+				m_tileSize.x * pos.x,
+				map.height() * m_tileSize.y - m_tileSize.y * (pos.y + 1)
+			};
 			const auto& layer = map.at(pos);
 
 			for (const auto& e: layer)
 			{
 				if (e == 139)
 				{
-					spawnEntrance(pos);
+					spawnEntrance(tilePos);
 				}
 				else if (e != -1)
 				{
-					spawnTile(e, pos);
+					spawnTile(e, tilePos);
 				}
 			}
 		}
@@ -271,49 +249,15 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 void SceneLevel::spawnEntrance(const Vec2& pos)
 {
 	auto entrance = m_entities.addEntity("entrance");
-	entrance->addComponent<CTransform>(
-		Vec2{
-			m_tileSize.x * pos.x,
-			height() - m_tileSize.y * (pos.y + 1)
-		}
-	);
+	entrance->addComponent<CTransform>(pos);
 	entrance->addComponent<CShape>(m_tileSize, sf::Color(49, 162, 242));
-}
-
-void SceneLevel::spawnExit(const Vec2& pos)
-{
-	auto exit = m_entities.addEntity("exit");
-	exit->addComponent<CTransform>(
-		Vec2{
-			m_tileSize.x * pos.x,
-			height() - m_tileSize.y * (pos.y + 1)
-		}
-	);
-	exit->addComponent<CShape>(m_tileSize, sf::Color(235, 137, 49));
 }
 
 void SceneLevel::spawnTile(size_t i, const Vec2& pos)
 {
 	auto tile = m_entities.addEntity("tile");
-	tile->addComponent<CTransform>(
-		Vec2{
-			m_tileSize.x * pos.x,
-			float(m_game->window().getSize().y) - m_tileSize.y * (pos.y + 1)
-		}
-	);
+	tile->addComponent<CTransform>(pos);
 	tile->addComponent<CSprite>(m_assets.getSprite("level_debug", i));
-}
-
-void SceneLevel::spawnClimbableTile(const Vec2& pos)
-{
-	auto tile = m_entities.addEntity("climbableTile");
-	tile->addComponent<CTransform>(
-		Vec2{
-			m_tileSize.x * pos.x,
-			float(m_game->window().getSize().y) - m_tileSize.y * (pos.y + 1)
-		}
-	);
-	tile->addComponent<CShape>(m_tileSize, sf::Color(68, 137, 26));
 }
 
 void SceneLevel::spawnPlayer()
@@ -339,7 +283,6 @@ void SceneLevel::spawnPlayer()
 	m_player = player;
 }
 
-
 void SceneLevel::onResizeView(sf::View& view)
 {
 	float aspectRatio = view.getSize().y / view.getSize().x;
@@ -350,10 +293,6 @@ void SceneLevel::onResizeView(sf::View& view)
 	sCamera(); // make sure the camera is located correctly
 }
 
-float SceneLevel::width() const
-{
-	return float(m_game->window().getSize().x);
-}
 
 float SceneLevel::height() const
 {
