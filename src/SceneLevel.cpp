@@ -292,9 +292,3 @@ void SceneLevel::onResizeView(sf::View& view)
 
 	sCamera(); // make sure the camera is located correctly
 }
-
-
-float SceneLevel::height() const
-{
-	return float(m_game->window().getSize().y);
-}

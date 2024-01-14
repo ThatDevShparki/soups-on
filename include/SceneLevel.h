@@ -42,7 +42,4 @@ public:
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
 	void onResizeView(sf::View& view) override;
-
-	float width() const;
-	float height() const;
 };
