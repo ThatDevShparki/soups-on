@@ -15,3 +15,6 @@ map marioMap maps/map_003_items.csv
 map marioMap maps/map_003_map.csv
 sprites background 32 32 sprites/SO-BKGTILESET.png
 sprites dude 32 48 sprites/SO-GUYRUNNING.png
+map map_004 maps/map_004_items.csv
+map map_004 maps/map_004_mapBackground.csv
+map map_004 maps/map_004_mapForeground.csv

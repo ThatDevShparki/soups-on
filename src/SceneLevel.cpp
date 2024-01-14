@@ -20,7 +20,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities (updates entities!)
-	initEntitiesFromMap("marioMap");
+	initEntitiesFromMap("map_004");
 
 	// register actions
 	registerAction(
