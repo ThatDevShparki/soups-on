@@ -41,5 +41,5 @@ public:
 	void quit() override;
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
-	void onResizeView(sf::View& view) override;
+	void onResizeView(const Vec2& size) override;
 };

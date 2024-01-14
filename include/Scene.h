@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SFML/Graphics.hpp"
 #include "Game.h"
 #include "EntityManager.h"
 #include "AssetManager.h"
@@ -14,9 +15,10 @@ protected:
 
 	Game* m_game = nullptr;
 
-	size_t m_currentFrame = 0;
-	bool   m_paused       = false;
-	bool   m_ended        = false;
+	sf::View m_view;
+	size_t   m_currentFrame = 0;
+	bool     m_paused       = false;
+	bool     m_ended        = false;
 
 	EntityManager m_entities;
 	AssetManager  m_assets;
@@ -45,9 +47,11 @@ public:
 		const ActionSource& source, const uint16_t& code
 	) const;
 
+	const sf::View& view() const;
+
 	virtual void update() = 0;
 	virtual void quit() = 0;
 	virtual void doAction(const std::string& action, const ActionKind& kind) = 0;
-	virtual void onResizeView(sf::View& view) = 0;
+	virtual void onResizeView(const Vec2& size) = 0;
 
 };

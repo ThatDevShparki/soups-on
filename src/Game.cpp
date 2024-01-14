@@ -59,14 +59,17 @@ void Game::update()
 
 	sUserInput();
 
+	// render scene content
+	m_window.setView(currentScene()->view());
 	currentScene()->update();
 
+	// render game content
+	m_window.setView(m_view);
 	if (m_showDelta)
 	{
 		sShowDebug();
 	}
 
-	m_window.setView(m_view);
 	m_window.display();
 }
 
@@ -106,10 +109,7 @@ void Game::sUserInput()
 					float(event.size.height)
 				}
 			);
-
-			currentScene()->onResizeView(m_view);
-
-			m_window.setView(m_view);
+			currentScene()->onResizeView(Vec2(m_view.getSize()));
 		}
 
 		// pass keyboard events to current scene

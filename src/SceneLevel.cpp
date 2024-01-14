@@ -49,7 +49,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	spawnPlayer();
 
 	// initialize view
-	onResizeView(m_game->view());
+	onResizeView(Vec2(m_game->view().getSize()));
 }
 
 void SceneLevel::update()
@@ -179,7 +179,7 @@ void SceneLevel::sCamera()
 	auto& sprite    = m_player->getComponent<CSprite>();
 	auto& map       = m_assets.getMap(m_map);
 
-	Vec2 viewSize   = Vec2(m_game->view().getSize());
+	Vec2 viewSize   = Vec2(m_view.getSize());
 	Vec2 viewOrigin = Vec2(transform.pos) +
 					  Vec2(sprite.sprite.getGlobalBounds().getSize()) / 2;
 
@@ -201,8 +201,7 @@ void SceneLevel::sCamera()
 		viewOrigin.y = map.height() * m_tileSize.y - viewSize.y / 2;
 	}
 
-	auto& view = m_game->view();
-	view.setCenter(sf::Vector2f(viewOrigin));
+	m_view.setCenter(sf::Vector2f(viewOrigin));
 }
 
 
@@ -283,12 +282,12 @@ void SceneLevel::spawnPlayer()
 	m_player = player;
 }
 
-void SceneLevel::onResizeView(sf::View& view)
+void SceneLevel::onResizeView(const Vec2& size)
 {
-	float aspectRatio = view.getSize().y / view.getSize().x;
+	float aspectRatio = size.y / size.x;
 	float height      = m_tileSize.y * m_tileZoom;
 	float width       = height / aspectRatio;
-	view.setSize({ width, height });
+	m_view.setSize({ width, height });
 
 	sCamera(); // make sure the camera is located correctly
 }

@@ -41,3 +41,8 @@ Scene::getActionFor(const ActionSource& source, const uint16_t& code) const
 {
 	return m_actions.getAction(source, code);
 }
+
+const sf::View& Scene::view() const
+{
+	return m_view;
+}
