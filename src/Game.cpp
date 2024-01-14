@@ -64,6 +64,8 @@ void Game::update()
 	if (m_showDelta)
 	{
 		sShowDebug();
+
+		
 	}
 
 	m_window.setView(m_view);
