@@ -257,12 +257,20 @@ void SceneLevel::spawnTile(size_t i, const Vec2& pos)
 
 void SceneLevel::spawnPlayer()
 {
-	auto& spawnTile    = m_entities.getEntities("entrance")[0];
-	auto& spawnTilePos = spawnTile->getComponent<CTransform>().pos;
+	auto& spawnTile = m_entities.getEntities("entrance")[0];
+	auto spawnTilePos =
+			 spawnTile->getComponent<CTransform>().pos +
+			 Vec2(0.0f, m_tileSize.y);
+
 	auto player = m_entities.addEntity("player");
+	player->addComponent<CSprite>(
+		m_assets.getSprite("dude", 0)
+	);
+	auto& sprite = player->getComponent<CSprite>().sprite;
 	player->addComponent<CTransform>(
 		Vec2{
-			spawnTilePos.x, spawnTilePos.y + m_tileSize.y - 1.25f * m_tileSize.y
+			spawnTilePos.x,
+			spawnTilePos.y - sprite.getGlobalBounds().height
 		},
 		Vec2{ 0.0f, 0.0f },
 		Vec2{ 0.0f, 0.0f },
@@ -270,9 +278,6 @@ void SceneLevel::spawnPlayer()
 		0.0f,
 		300.0f,
 		0.0f
-	);
-	player->addComponent<CSprite>(
-		m_assets.getSprite("dude", 0)
 	);
 	player->addComponent<CInput>();
 	m_player = player;
