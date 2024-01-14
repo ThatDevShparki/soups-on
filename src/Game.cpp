@@ -61,7 +61,7 @@ void Game::update()
 
 	// render scene content
 	m_window.setView(currentScene()->view());
-	currentScene()->update();
+	currentScene()->update(m_delta);
 
 	// render game content
 	m_window.setView(m_view);
@@ -222,19 +222,9 @@ sf::View& Game::view()
 	return m_view;
 }
 
-
 bool Game::isRunning() const
 {
 	return m_window.isOpen() && m_running;
-}
-
-
-/* time management */
-
-
-float Game::delta() const
-{
-	return m_delta;
 }
 
 

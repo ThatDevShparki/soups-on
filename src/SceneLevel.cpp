@@ -52,13 +52,13 @@ void SceneLevel::init(const std::string& manifestPath)
 	onResizeView(Vec2(m_game->view().getSize()));
 }
 
-void SceneLevel::update()
+void SceneLevel::update(float delta)
 {
 	m_entities.update();
 
 	sRender();
 	sInput();
-	sMovement();
+	sMovement(delta);
 	sCamera();
 
 	m_currentFrame++;
@@ -158,7 +158,7 @@ void SceneLevel::sInput()
 
 }
 
-void SceneLevel::sMovement()
+void SceneLevel::sMovement(float delta)
 {
 	auto& transform = m_player->getComponent<CTransform>();
 
@@ -167,7 +167,7 @@ void SceneLevel::sMovement()
 	{
 		transform.vel = transform.vel.norm() * transform.maxVel;
 	}
-	transform.vel   = transform.vel * m_game->delta();
+	transform.vel   = transform.vel * delta;
 
 	transform.pos += transform.vel;
 

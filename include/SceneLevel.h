@@ -20,7 +20,7 @@ protected:
 
 	void sRender() override;
 	void sInput();
-	void sMovement();
+	void sMovement(float delta);
 	void sCamera();
 
 	void initEntitiesFromMap(const std::string& mapName);
@@ -37,7 +37,7 @@ public:
 	explicit SceneLevel(Game* game, const std::string& manifestPath);
 	~SceneLevel() override;
 
-	void update() override;
+	void update(float delta) override;
 	void quit() override;
 	void doAction(const std::string& action, const ActionKind& kind) override;
 

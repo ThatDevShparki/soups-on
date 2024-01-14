@@ -49,7 +49,7 @@ public:
 
 	const sf::View& view() const;
 
-	virtual void update() = 0;
+	virtual void update(float delta) = 0;
 	virtual void quit() = 0;
 	virtual void doAction(const std::string& action, const ActionKind& kind) = 0;
 	virtual void onResizeView(const Vec2& size) = 0;

@@ -61,10 +61,7 @@ public:
 	// window management
 	sf::RenderWindow& window();
 	sf::View& view();
-
-
-	// time management
-	float delta() const;
+	
 
 	// scene management
 	[[nodiscard]] std::shared_ptr<Scene> currentScene() const;
