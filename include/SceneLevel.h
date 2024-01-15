@@ -14,15 +14,16 @@ protected:
 	sf::Text                m_gridText;
 	std::shared_ptr<Entity> m_player;
 	std::string             m_map;
-	bool                    m_renderGrid = false;
-	Vec2                    m_tileSize   = { 32.0f, 32.0f };
-	float                   m_tileZoom   = 12.0f;
+	bool                    m_renderDebug = false;
+	Vec2                    m_tileSize    = { 32.0f, 32.0f };
+	float                   m_tileZoom    = 12.0f;
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void sInput();
 	void sMovement(float delta);
 	void sCamera();
+	void sState();
 
 	void initEntitiesFromMap(const std::string& mapName);
 	void spawnEntrance(const Vec2& pos);

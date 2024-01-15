@@ -42,7 +42,7 @@ void SceneLevel::init(const std::string& manifestPath)
 		ActionSource::keyboard, sf::Keyboard::E, "interact"
 	);
 	registerAction(
-		ActionSource::keyboard, sf::Keyboard::G, "toggleGrid"
+		ActionSource::keyboard, sf::Keyboard::R, "toggleDebug"
 	);
 
 	// Spawn player
@@ -55,9 +55,10 @@ void SceneLevel::init(const std::string& manifestPath)
 void SceneLevel::update(float delta)
 {
 	m_entities.update();
-	
+
 	sInput();
 	sMovement(delta);
+	sState();
 	sCamera();
 
 	m_currentFrame++;
@@ -76,6 +77,36 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			target.draw(sprite.sprite);
 		}
 	}
+
+	if (m_renderDebug)
+	{
+		for (const auto& e: m_entities.getEntities())
+		{
+			auto& sprite = e->getComponent<CSprite>();
+
+			sf::RectangleShape spriteShape;
+			spriteShape.setSize(sprite.sprite.getGlobalBounds().getSize());
+			spriteShape.setOutlineThickness(1.0f);
+			spriteShape.setFillColor(sf::Color::Transparent);
+			spriteShape.setOutlineColor(sf::Color::Cyan);
+			spriteShape.setPosition(sprite.sprite.getPosition());
+
+			target.draw(spriteShape);
+		}
+		for (const auto& e: m_entities.getEntities())
+		{
+			auto& transform = e->getComponent<CTransform>();
+
+			sf::CircleShape posShape;
+			posShape.setRadius(0.01f);
+			posShape.setOutlineThickness(2.0f);
+			posShape.setFillColor(sf::Color::Magenta);
+			posShape.setOutlineColor(sf::Color::Magenta);
+			posShape.setPosition(sf::Vector2f(transform.pos));
+
+			target.draw(posShape);
+		}
+	}
 }
 
 
@@ -88,9 +119,9 @@ void SceneLevel::doAction(const std::string& action, const ActionKind& kind)
 {
 	if (kind == ActionKind::pressed)
 	{
-		if (action == "toggleGrid")
+		if (action == "toggleDebug")
 		{
-			m_renderGrid = !m_renderGrid;
+			m_renderDebug = !m_renderDebug;
 		}
 		else if (action == "up")
 		{
@@ -135,6 +166,7 @@ void SceneLevel::sInput()
 
 	auto& input     = m_player->getComponent<CInput>();
 	auto& transform = m_player->getComponent<CTransform>();
+	auto& state     = m_player->getComponent<CState>();
 
 	Vec2 diff = { 0.0f, 0.0f };
 	if (input.up)
@@ -176,12 +208,10 @@ void SceneLevel::sMovement(float delta)
 void SceneLevel::sCamera()
 {
 	auto& transform = m_player->getComponent<CTransform>();
-	auto& sprite    = m_player->getComponent<CSprite>();
 	auto& map       = m_assets.getMap(m_map);
 
 	Vec2 viewSize   = Vec2(m_view.getSize());
-	Vec2 viewOrigin = Vec2(transform.pos) +
-					  Vec2(sprite.sprite.getGlobalBounds().getSize()) / 2;
+	Vec2 viewOrigin = transform.pos;
 
 	if (viewOrigin.x < viewSize.x / 2)
 	{
@@ -202,6 +232,60 @@ void SceneLevel::sCamera()
 	}
 
 	m_view.setCenter(sf::Vector2f(viewOrigin));
+}
+
+void SceneLevel::sState()
+{
+	auto& vel    = m_player->getComponent<CTransform>().vel;
+	auto& state  = m_player->getComponent<CState>();
+	auto& sprite = m_player->getComponent<CSprite>();
+
+	if (vel.x != 0)
+	{
+		state.running = true;
+		if (vel.x > 0)
+		{
+			state.facingLeft = false;
+		}
+		else
+		{
+			state.facingLeft = true;
+		}
+	}
+	else
+	{
+		state.running = false;
+	}
+	if (vel.y != 0)
+	{
+		state.jumping = true;
+	}
+	else
+	{
+		state.jumping = false;
+	}
+
+	if (state.running)
+	{
+		sprite.sprite = m_assets.getSprite("dudeRunning", 0);
+	}
+	if (state.jumping)
+	{
+		sprite.sprite = m_assets.getSprite("dudeJumping", 0);
+	}
+	if (!state.running && !state.jumping)
+	{
+		sprite.sprite = m_assets.getSprite("dudeIdle", 0);
+	}
+
+	if (state.facingLeft)
+	{
+		sprite.sprite.setScale(-1.0f, 1.0f);
+	}
+	else
+	{
+		sprite.sprite.setScale(1.0f, 1.0f);
+	}
 }
 
 
@@ -262,10 +346,12 @@ void SceneLevel::spawnPlayer()
 			 Vec2(0.0f, m_tileSize.y);
 
 	auto player = m_entities.addEntity("player");
+
 	player->addComponent<CSprite>(
-		m_assets.getSprite("dude", 0)
+		m_assets.getSprite("dudeIdle", 0)
 	);
 	auto& sprite = player->getComponent<CSprite>().sprite;
+
 	player->addComponent<CTransform>(
 		Vec2{
 			spawnTilePos.x,
@@ -278,7 +364,11 @@ void SceneLevel::spawnPlayer()
 		300.0f,
 		0.0f
 	);
+	auto& pos = player->getComponent<CTransform>().pos;
+
 	player->addComponent<CInput>();
+	player->addComponent<CState>();
+
 	m_player = player;
 }
 

@@ -105,3 +105,13 @@ public:
 	{
 	}
 };
+
+class CState : public Component
+{
+public:
+	bool jumping    = false;
+	bool running    = false;
+	bool facingLeft = false;
+
+	CState() = default;
+};
