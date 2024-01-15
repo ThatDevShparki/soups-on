@@ -23,6 +23,7 @@ FetchContent_MakeAvailable(SFML)
 # create executable
 set(src_files
         src/ActionManager.cpp
+        src/Animation.cpp
         src/AssetManager.cpp
         src/Entity.cpp
         src/EntityManager.cpp

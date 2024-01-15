@@ -49,6 +49,12 @@ void AssetManager::init(const std::string& manifestPath)
 			file >> n >> p;
 			addMap(n, { "assets/" + p });
 		}
+		else if (head == "animation")
+		{
+			std::string n, w, h, l, p;
+			file >> n >> w >> h >> l >> p;
+			addAnimation(n, std::stoi(w), std::stoi(h), std::stof(l), "assets/" + p);
+		}
 	}
 	std::cout << "Loaded all assets from manifest " + manifestPath << std::endl;
 }
@@ -132,6 +138,21 @@ void AssetManager::addMap(
 	std::cout << "Loaded map " + tag + ": " << std::endl;
 }
 
+void AssetManager::addAnimation(
+	const std::string& tag,
+	unsigned int width,
+	unsigned int height,
+	float length,
+	const std::string& path
+)
+{
+	addSprites(tag, width, height, path);
+	m_animations[tag] = Animation(getSprites(tag), length);
+	std::cout
+		<< "Loaded animation (" + std::to_string(length) + "s) " + tag + " from " +
+		   path << std::endl;
+}
+
 
 const TextureMap& AssetManager::textures() const
 {
@@ -153,15 +174,25 @@ const MapMap& AssetManager::maps() const
 	return m_maps;
 }
 
+const AnimationMap& AssetManager::animations() const
+{
+	return m_animations;
+}
+
 
 const sf::Texture& AssetManager::getTexture(const std::string& tag) const
 {
 	return m_textures.at(tag);
 }
 
+const std::vector<sf::Sprite>& AssetManager::getSprites(const std::string& tag) const
+{
+	return m_sprites.at(tag);
+}
+
 const sf::Sprite& AssetManager::getSprite(const std::string& tag, size_t index) const
 {
-	return m_sprites.at(tag)[index];
+	return getSprites(tag)[index];
 }
 
 const sf::Font& AssetManager::getFont(const std::string& tag) const
@@ -172,4 +203,9 @@ const sf::Font& AssetManager::getFont(const std::string& tag) const
 const Map& AssetManager::getMap(const std::string& tag) const
 {
 	return m_maps.at(tag);
+}
+
+const Animation& AssetManager::getAnimation(const std::string& tag) const
+{
+	return m_animations.at(tag);
 }
