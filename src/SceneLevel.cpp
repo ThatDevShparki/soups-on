@@ -98,7 +98,7 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			auto& transform = e->getComponent<CTransform>();
 
 			sf::CircleShape posShape;
-			posShape.setRadius(0.01f);a
+			posShape.setRadius(0.01f);
 			posShape.setOutlineThickness(2.0f);
 			posShape.setFillColor(sf::Color::Magenta);
 			posShape.setOutlineColor(sf::Color::Magenta);
