@@ -87,7 +87,7 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			sf::RectangleShape spriteShape;
 			spriteShape.setSize(sprite.sprite.getGlobalBounds().getSize());
 			spriteShape.setOutlineThickness(1.0f);
-			spriteShape.setFillColor(sf::Color::Transparent);
+			spriteShape.setFillColor(sf::Color(0, 255, 255, 32));
 			spriteShape.setOutlineColor(sf::Color::Cyan);
 			spriteShape.setPosition(sprite.sprite.getPosition());
 
@@ -98,7 +98,7 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			auto& transform = e->getComponent<CTransform>();
 
 			sf::CircleShape posShape;
-			posShape.setRadius(0.01f);
+			posShape.setRadius(0.01f);a
 			posShape.setOutlineThickness(2.0f);
 			posShape.setFillColor(sf::Color::Magenta);
 			posShape.setOutlineColor(sf::Color::Magenta);
