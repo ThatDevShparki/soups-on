@@ -280,6 +280,12 @@ void SceneLevel::sState()
 
 	if (state.facingLeft)
 	{
+		sprite.sprite.setOrigin(
+			sprite.sprite.getOrigin() + sf::Vector2f(
+				sprite.sprite.getGlobalBounds().width,
+				0
+			)
+		);
 		sprite.sprite.setScale(-1.0f, 1.0f);
 	}
 	else
