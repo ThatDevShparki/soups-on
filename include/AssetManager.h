@@ -18,6 +18,7 @@ class AssetManager
 	SpriteMap    m_sprites;
 	FontMap      m_fonts;
 	MapMap       m_maps;
+	MapMap       m_collisions;
 	AnimationMap m_animations;
 
 	void init(const std::string& manifestPath);
@@ -36,6 +37,9 @@ public:
 	);
 	void addFont(const std::string& tag, const std::string& path);
 	void addMap(const std::string& tag, const std::vector<std::string>& paths);
+	void addCollisions(
+		const std::string& tag, const std::vector<std::string>& paths
+	);
 	void addAnimation(
 		const std::string& tag,
 		unsigned int width,
@@ -48,6 +52,7 @@ public:
 	[[nodiscard]] const SpriteMap& sprites() const;
 	[[nodiscard]] const FontMap& fonts() const;
 	[[nodiscard]] const MapMap& maps() const;
+	[[nodiscard]] const MapMap& collisions() const;
 	[[nodiscard]] const AnimationMap& animations() const;
 
 	[[nodiscard]] const sf::Texture& getTexture(const std::string& tag) const;
@@ -59,5 +64,6 @@ public:
 	) const;
 	[[nodiscard]] const sf::Font& getFont(const std::string& tag) const;
 	[[nodiscard]] const Map& getMap(const std::string& tag) const;
+	[[nodiscard]] const Map& getCollisions(const std::string& tag) const;
 	[[nodiscard]] const Animation& getAnimation(const std::string& tag) const;
 };

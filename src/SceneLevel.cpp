@@ -1,5 +1,6 @@
 #include "SceneLevel.h"
 #include <iostream>
+#include <numeric>
 
 
 SceneLevel::SceneLevel(Game* game, const std::string& manifestPath)
@@ -82,29 +83,52 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (const auto& e: m_entities.getEntities())
 		{
+			auto& transform   = e->getComponent<CTransform>();
+			auto& boundingBox = e->getComponent<CBoundingBox>();
+
+			if (boundingBox.has && transform.has)
+			{
+				sf::RectangleShape boundingShape;
+				boundingShape.setSize(sf::Vector2f(boundingBox.size));
+				boundingShape.setOutlineThickness(2.0f);
+				boundingShape.setFillColor(sf::Color::Transparent);
+				boundingShape.setOutlineColor(sf::Color::Black);
+				boundingShape.setPosition(sf::Vector2f(transform.pos));
+
+				target.draw(boundingShape);
+			}
+		}
+		for (const auto& e: m_entities.getEntities())
+		{
 			auto& sprite = e->getComponent<CSprite>();
 
-			sf::RectangleShape spriteShape;
-			spriteShape.setSize(sprite.sprite.getGlobalBounds().getSize());
-			spriteShape.setOutlineThickness(1.0f);
-			spriteShape.setFillColor(sf::Color(0, 255, 255, 32));
-			spriteShape.setOutlineColor(sf::Color::Cyan);
-			spriteShape.setPosition(sprite.sprite.getPosition());
+			if (sprite.has)
+			{
+				sf::RectangleShape spriteShape;
+				spriteShape.setSize(sprite.sprite.getGlobalBounds().getSize());
+				spriteShape.setOutlineThickness(1.0f);
+				spriteShape.setFillColor(sf::Color(0, 255, 255, 32));
+				spriteShape.setOutlineColor(sf::Color::Cyan);
+				spriteShape.setPosition(sprite.sprite.getPosition());
 
-			target.draw(spriteShape);
+				target.draw(spriteShape);
+			}
 		}
 		for (const auto& e: m_entities.getEntities())
 		{
 			auto& transform = e->getComponent<CTransform>();
 
-			sf::CircleShape posShape;
-			posShape.setRadius(0.01f);
-			posShape.setOutlineThickness(2.0f);
-			posShape.setFillColor(sf::Color::Magenta);
-			posShape.setOutlineColor(sf::Color::Magenta);
-			posShape.setPosition(sf::Vector2f(transform.pos));
+			if (transform.has)
+			{
+				sf::CircleShape posShape;
+				posShape.setRadius(0.01f);
+				posShape.setOutlineThickness(2.0f);
+				posShape.setFillColor(sf::Color::Magenta);
+				posShape.setOutlineColor(sf::Color::Magenta);
+				posShape.setPosition(sf::Vector2f(transform.pos));
 
-			target.draw(posShape);
+				target.draw(posShape);
+			}
 		}
 	}
 }
@@ -324,6 +348,24 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 		}
 	}
 
+	const Map& collisions = m_assets.getCollisions(mapName);
+	for (int j = 0; j < collisions.height(); j++)
+	{
+		for (int i = 0; i < collisions.width(); i++)
+		{
+			const auto& l = collisions.at(i, j);
+			if (std::reduce(l.begin(), l.end()) > 0)
+			{
+				spawnBoundingBox(
+					{
+						m_tileSize.x * i,
+						collisions.height() * m_tileSize.y - m_tileSize.y * (j + 1)
+					}
+				);
+			}
+		}
+	}
+
 	m_entities.update();
 	m_map = mapName;
 
@@ -342,6 +384,14 @@ void SceneLevel::spawnTile(size_t i, const Vec2& pos)
 	auto tile = m_entities.addEntity("tile");
 	tile->addComponent<CTransform>(pos);
 	tile->addComponent<CSprite>(m_assets.getSprite("background", i));
+}
+
+void SceneLevel::spawnBoundingBox(const Vec2& pos)
+{
+	auto boundingBox = m_entities.addEntity("boundingBox");
+	boundingBox->addComponent<CTransform>(pos);
+	boundingBox->addComponent<CBoundingBox>(m_tileSize);
+
 }
 
 void SceneLevel::spawnPlayer()
@@ -374,6 +424,7 @@ void SceneLevel::spawnPlayer()
 
 	player->addComponent<CInput>();
 	player->addComponent<CState>();
+	player->addComponent<CBoundingBox>(Vec2(sprite.getGlobalBounds().getSize()));
 
 	m_player = player;
 }

@@ -32,6 +32,7 @@ public:
 	[[nodiscard]] const std::vector<int>& data() const;
 
 	[[nodiscard]] std::vector<int> at(const Vec2& pos) const;
+	[[nodiscard]] std::vector<int> at(unsigned int i, unsigned int j) const;
 	[[nodiscard]] int at(const Vec2& pos, size_t layer) const;
 
 	void addLayer(const std::string& layerPath);

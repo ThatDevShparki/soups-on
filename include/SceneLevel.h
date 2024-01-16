@@ -29,6 +29,7 @@ protected:
 	void spawnEntrance(const Vec2& pos);
 	void spawnExit(const Vec2& pos);
 	void spawnTile(const size_t i, const Vec2& pos);
+	void spawnBoundingBox(const Vec2& pos);
 	void spawnClimbableTile(const Vec2& pos);
 	void spawnPlayer();
 

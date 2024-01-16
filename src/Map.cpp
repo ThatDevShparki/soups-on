@@ -161,6 +161,11 @@ std::vector<int> Map::at(const Vec2& pos) const
 	return layer;
 }
 
+std::vector<int> Map::at(unsigned int i, unsigned int j) const
+{
+	return at({ float(i), float(j) });
+}
+
 int Map::at(const Vec2& pos, size_t layer) const
 {
 	size_t index = indexOf(pos, layer);

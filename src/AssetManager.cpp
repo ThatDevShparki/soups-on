@@ -49,6 +49,12 @@ void AssetManager::init(const std::string& manifestPath)
 			file >> n >> p;
 			addMap(n, { "assets/" + p });
 		}
+		else if (head == "collisions")
+		{
+			std::string n, p;
+			file >> n >> p;
+			addCollisions(n, { "assets/" + p });
+		}
 		else if (head == "animation")
 		{
 			std::string n, w, h, l, p;
@@ -138,6 +144,26 @@ void AssetManager::addMap(
 	std::cout << "Loaded map " + tag + ": " << std::endl;
 }
 
+void AssetManager::addCollisions(
+	const std::string& tag,
+	const std::vector<std::string>& paths
+)
+{
+	if (m_collisions.count(tag) > 0)
+	{
+		for (const auto& p: paths)
+		{
+			m_collisions[tag].addLayer(p);
+		}
+	}
+	else
+	{
+		m_collisions[tag] = Map(paths);
+	}
+
+	std::cout << "Update collisions for " + tag << std::endl;
+}
+
 void AssetManager::addAnimation(
 	const std::string& tag,
 	unsigned int width,
@@ -174,6 +200,11 @@ const MapMap& AssetManager::maps() const
 	return m_maps;
 }
 
+const MapMap& AssetManager::collisions() const
+{
+	return m_collisions;
+}
+
 const AnimationMap& AssetManager::animations() const
 {
 	return m_animations;
@@ -203,6 +234,11 @@ const sf::Font& AssetManager::getFont(const std::string& tag) const
 const Map& AssetManager::getMap(const std::string& tag) const
 {
 	return m_maps.at(tag);
+}
+
+const Map& AssetManager::getCollisions(const std::string& tag) const
+{
+	return m_collisions.at(tag);
 }
 
 const Animation& AssetManager::getAnimation(const std::string& tag) const
