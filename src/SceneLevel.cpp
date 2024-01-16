@@ -225,6 +225,7 @@ void SceneLevel::sMovement(float delta)
 	}
 	transform.vel   = transform.vel * delta;
 
+	transform.prevPos = transform.pos;
 	transform.pos += transform.vel;
 
 }

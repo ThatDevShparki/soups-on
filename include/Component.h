@@ -17,13 +17,14 @@ class CTransform : public Component
 {
 public:
 
-	Vec2  pos    = { 0.0f, 0.0f };
-	Vec2  vel    = { 0.0f, 0.0f };
-	Vec2  acc    = { 0.0f, 0.0f };
-	Vec2  scale  = { 0.0f, 0.0f };
-	float rot    = 0.0f;
-	float maxVel = 0.0f;
-	float maxAcc = 0.0f;
+	Vec2  pos     = { 0.0f, 0.0f };
+	Vec2  prevPos = { 0.0f, 0.0f };
+	Vec2  vel     = { 0.0f, 0.0f };
+	Vec2  acc     = { 0.0f, 0.0f };
+	Vec2  scale   = { 0.0f, 0.0f };
+	float rot     = 0.0f;
+	float maxVel  = 0.0f;
+	float maxAcc  = 0.0f;
 
 	CTransform() = default;
 
