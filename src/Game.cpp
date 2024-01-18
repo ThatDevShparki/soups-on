@@ -155,8 +155,16 @@ void Game::sShowDebug()
 	debugTexts.push_back(avgFpsText);
 
 	sf::Text deltaText;
-	deltaText.setString("delta: " + std::to_string(m_avgDelta));
+	deltaText.setString("Delta: " + std::to_string(m_avgDelta));
 	debugTexts.push_back(deltaText);
+
+	sf::Text entitiesText;
+	entitiesText.setString(
+		"Entities: " + std::to_string(
+			currentScene()->entities().getEntities().size()
+		)
+	);
+	debugTexts.push_back(entitiesText);
 
 	float maxWidth  = 0;
 	float maxHeight = 0;

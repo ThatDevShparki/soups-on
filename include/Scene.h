@@ -48,6 +48,7 @@ public:
 	) const;
 
 	const sf::View& view() const;
+	const EntityManager& entities() const;
 
 	virtual void update(float delta) = 0;
 	virtual void quit() = 0;

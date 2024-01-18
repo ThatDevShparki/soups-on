@@ -46,3 +46,8 @@ const sf::View& Scene::view() const
 {
 	return m_view;
 }
+
+const EntityManager& Scene::entities() const
+{
+	return m_entities;
+}
