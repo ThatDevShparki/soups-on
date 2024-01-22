@@ -7,9 +7,9 @@
 class Animation
 {
 	std::vector<sf::Sprite> m_frames;
-	float                   m_animationLength; // length in seconds
-	float                   m_elapsedTime;
-	float                   m_frameDelta;
+	float                   m_animationLength = 0; // length in seconds
+	float                   m_elapsedTime     = 0;
+	float                   m_frameDelta      = 0;
 
 public:
 
@@ -20,7 +20,6 @@ public:
 
 	void update(float delta);
 
-	[[nodiscard]] const sf::Sprite& getCurrentFrame() const;
-
+	[[nodiscard]] sf::Sprite& getCurrentFrame();
 
 };

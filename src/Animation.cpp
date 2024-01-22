@@ -15,10 +15,13 @@ Animation::Animation(
 void Animation::update(float delta)
 {
 	m_elapsedTime += delta;
-	m_elapsedTime = std::remainder(m_animationLength, m_elapsedTime);
+	while (m_elapsedTime >= m_animationLength)
+	{
+		m_elapsedTime -= m_animationLength;
+	}
 }
 
-const sf::Sprite& Animation::getCurrentFrame() const
+sf::Sprite& Animation::getCurrentFrame()
 {
-	return m_frames[int(m_elapsedTime / m_frameDelta) - 1];
+	return m_frames.at(int(m_elapsedTime / m_frameDelta));
 }
