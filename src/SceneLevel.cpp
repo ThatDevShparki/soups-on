@@ -60,6 +60,8 @@ void SceneLevel::update(float delta)
 	sInput();
 	sMovement(delta);
 	sState();
+	sCollisions();
+
 	sCamera();
 
 	m_currentFrame++;
@@ -316,6 +318,27 @@ void SceneLevel::sState()
 	else
 	{
 		sprite.sprite.setScale(1.0f, 1.0f);
+	}
+}
+
+void SceneLevel::sCollisions()
+{
+	const auto& pBox = m_player->getComponent<CBoundingBox>();
+	const auto& pPos = m_player->getComponent<CTransform>().pos + pBox.halfSize;
+
+	for (auto& e: m_entities.getEntities("boundingBox"))
+	{
+		const auto& eBox = e->getComponent<CBoundingBox>();
+		const auto& ePos = e->getComponent<CTransform>().pos + eBox.halfSize;
+
+		const Vec2  delta(abs(ePos.x - pPos.x), abs(ePos.y - pPos.y));
+		const float ox = eBox.halfSize.x + pBox.halfSize.x - delta.x;
+		const float oy = eBox.halfSize.y + pBox.halfSize.y - delta.y;
+
+		if (ox > 0 && oy > 0)
+		{
+			m_player->getComponent<CTransform>().pos = m_player->getComponent<CTransform>().prevPos;
+		}
 	}
 }
 
