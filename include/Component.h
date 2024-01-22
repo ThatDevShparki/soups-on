@@ -2,6 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "Vec2.h"
+#include "Animation.h"
 
 #include <tuple>
 
@@ -115,4 +116,17 @@ public:
 	bool facingLeft = false;
 
 	CState() = default;
+};
+
+class CAnimation : public Component
+{
+public:
+	Animation animation;
+
+	CAnimation() = default;
+
+	explicit CAnimation(const Animation& animation)
+		: animation(animation)
+	{
+	}
 };
