@@ -97,9 +97,9 @@ void AssetManager::addSprites(
 		exit(-1);
 	}
 
-	for (int j = 0; j < size.y; j += int(width))
+	for (int j = 0; j < size.y; j += int(height))
 	{
-		for (int i = 0; i < size.x; i += int(height))
+		for (int i = 0; i < size.x; i += int(width))
 		{
 			sprites.emplace_back(
 				texture,
