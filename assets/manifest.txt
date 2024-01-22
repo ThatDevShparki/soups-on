@@ -14,9 +14,9 @@ map awesomeMap maps/map_002_map.csv
 map marioMap maps/map_003_items.csv
 map marioMap maps/map_003_map.csv
 sprites background 32 32 sprites/SO-BKGTILESET.png
-animation dudeIdle 32 48 0.5 sprites/SOG1IDLE.png
+animation dudeIdle 32 48 0.75 sprites/SOG1IDLE.png
 animation dudeRunning 32 48 0.5 sprites/SO-GUYRUNNING.png
-animation dudeJumping 48 48 1.0 sprites/S0-GUYJUMP.png
+animation dudeJumping 48 48 1.5 sprites/S0-GUYJUMP.png
 map map_004 maps/map_004_mapBackground.csv
 map map_004 maps/map_004_mapForeground.csv
 map map_004 maps/map_004_decor.csv

@@ -25,6 +25,7 @@ protected:
 	void sCamera();
 	void sState();
 	void sCollisions();
+	void sAnimations(float delta);
 
 	void initEntitiesFromMap(const std::string& mapName);
 	void spawnEntrance(const Vec2& pos);

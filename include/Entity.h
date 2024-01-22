@@ -11,6 +11,7 @@ typedef std::tuple<
 	CInput,
 	CSprite,
 	CState,
+	CPrevState,
 	CAnimation
 > ComponentTuple;
 

@@ -62,6 +62,7 @@ void SceneLevel::update(float delta)
 	sState();
 	sCollisions();
 
+	sAnimations(delta);
 	sCamera();
 
 	m_currentFrame++;
@@ -72,12 +73,24 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	for (const auto& e: m_entities.getEntities())
 	{
 		auto& transform = e->getComponent<CTransform>();
-		auto& sprite    = e->getComponent<CSprite>();
 
-		if (transform.has && sprite.has)
+		if (transform.has)
 		{
-			sprite.sprite.setPosition(transform.pos.x, transform.pos.y);
-			target.draw(sprite.sprite);
+			auto& sprite = e->getComponent<CSprite>();
+
+			if (sprite.has)
+			{
+				sprite.sprite.setPosition(transform.pos.x, transform.pos.y);
+				target.draw(sprite.sprite);
+			}
+
+//			auto& animation = e->getComponent<CAnimation>();
+//			if (animation.has)
+//			{
+//				auto& frame = animation.animation.getCurrentFrame();
+//				frame.setPosition(transform.pos.x, transform.pos.y);
+//				target.draw(frame);
+//			}
 		}
 	}
 
@@ -263,9 +276,12 @@ void SceneLevel::sCamera()
 
 void SceneLevel::sState()
 {
-	auto& vel    = m_player->getComponent<CTransform>().vel;
-	auto& state  = m_player->getComponent<CState>();
-	auto& sprite = m_player->getComponent<CSprite>();
+	auto& vel       = m_player->getComponent<CTransform>().vel;
+	auto& state     = m_player->getComponent<CState>();
+	auto& animation = m_player->getComponent<CAnimation>();
+
+	m_player->addComponent<CPrevState>(state);
+	auto& prevState = m_player->getComponent<CPrevState>();
 
 	if (vel.x != 0)
 	{
@@ -292,32 +308,36 @@ void SceneLevel::sState()
 		state.jumping = false;
 	}
 
-	if (state.running)
+	if (prevState != state)
 	{
-		sprite.sprite = m_assets.getSprite("dudeRunning", 0);
-	}
-	if (state.jumping)
-	{
-		sprite.sprite = m_assets.getSprite("dudeJumping", 0);
-	}
-	if (!state.running && !state.jumping)
-	{
-		sprite.sprite = m_assets.getSprite("dudeIdle", 0);
-	}
+		if (state.running)
+		{
+			animation.animation = m_assets.getAnimation("dudeRunning");
+		}
+		if (state.jumping)
+		{
+			animation.animation = m_assets.getAnimation("dudeJumping");
+		}
+		if (!state.running && !state.jumping)
+		{
+			animation.animation = m_assets.getAnimation("dudeIdle");
+		}
 
-	if (state.facingLeft)
-	{
-		sprite.sprite.setOrigin(
-			sprite.sprite.getOrigin() + sf::Vector2f(
-				sprite.sprite.getGlobalBounds().width,
-				0
-			)
-		);
-		sprite.sprite.setScale(-1.0f, 1.0f);
-	}
-	else
-	{
-		sprite.sprite.setScale(1.0f, 1.0f);
+		auto& sprite = animation.animation.getCurrentFrame();
+		if (state.facingLeft)
+		{
+			sprite.setOrigin(
+				sprite.getOrigin() + sf::Vector2f(
+					sprite.getGlobalBounds().width,
+					0
+				)
+			);
+			sprite.setScale(-1.0f, 1.0f);
+		}
+		else
+		{
+			sprite.setScale(1.0f, 1.0f);
+		}
 	}
 }
 
@@ -338,6 +358,26 @@ void SceneLevel::sCollisions()
 		if (ox > 0 && oy > 0)
 		{
 			m_player->getComponent<CTransform>().pos = m_player->getComponent<CTransform>().prevPos;
+		}
+	}
+}
+
+void SceneLevel::sAnimations(float delta)
+{
+	for (auto& e: m_entities.getEntities())
+	{
+		auto& animation = e->getComponent<CAnimation>();
+
+		if (animation.has)
+		{
+			animation.animation.update(delta);
+
+			auto& sprite = e->getComponent<CSprite>();
+
+			if (sprite.has)
+			{
+				sprite.sprite = animation.animation.getCurrentFrame();
+			}
 		}
 	}
 }
@@ -449,6 +489,7 @@ void SceneLevel::spawnPlayer()
 	player->addComponent<CInput>();
 	player->addComponent<CState>();
 	player->addComponent<CBoundingBox>(Vec2(sprite.getGlobalBounds().getSize()));
+	player->addComponent<CAnimation>(m_assets.getAnimation("dudeIdle"));
 
 	m_player = player;
 }

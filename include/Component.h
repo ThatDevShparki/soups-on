@@ -116,6 +116,30 @@ public:
 	bool facingLeft = false;
 
 	CState() = default;
+
+	bool operator ==(CState rhs) const
+	{
+		return (jumping == rhs.jumping) && (running == rhs.running) &&
+			   (facingLeft == rhs.facingLeft);
+	}
+
+	bool operator !=(CState rhs) const
+	{
+		return !(rhs == *this);
+	}
+};
+
+class CPrevState : public CState
+{
+public:
+	CPrevState() = default;
+
+	explicit CPrevState(CState state)
+	{
+		jumping    = state.jumping;
+		running    = state.running;
+		facingLeft = state.facingLeft;
+	}
 };
 
 class CAnimation : public Component
