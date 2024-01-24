@@ -3,23 +3,26 @@
 #include "SFML/Graphics.hpp"
 #include "Map.h"
 #include "Animation.h"
+#include "Background.h"
 #include <string>
 #include <map>
 
 typedef std::map<std::string, sf::Texture>             TextureMap;
 typedef std::map<std::string, std::vector<sf::Sprite>> SpriteMap;
+typedef std::map<std::string, Background>              BackgroundMap;
 typedef std::map<std::string, sf::Font>                FontMap;
 typedef std::map<std::string, Map>                     MapMap;
 typedef std::map<std::string, Animation>               AnimationMap;
 
 class AssetManager
 {
-	TextureMap   m_textures;
-	SpriteMap    m_sprites;
-	FontMap      m_fonts;
-	MapMap       m_maps;
-	MapMap       m_collisions;
-	AnimationMap m_animations;
+	TextureMap    m_textures;
+	SpriteMap     m_sprites;
+	BackgroundMap m_backgrounds;
+	FontMap       m_fonts;
+	MapMap        m_maps;
+	MapMap        m_collisions;
+	AnimationMap  m_animations;
 
 	void init(const std::string& manifestPath);
 
@@ -34,6 +37,11 @@ public:
 		size_t width,
 		size_t height,
 		const std::string& path
+	);
+	void addBackground(
+		const std::string& tag,
+		const std::string& textureTag,
+		float factor
 	);
 	void addFont(const std::string& tag, const std::string& path);
 	void addMap(const std::string& tag, const std::vector<std::string>& paths);
@@ -50,6 +58,7 @@ public:
 
 	[[nodiscard]] const TextureMap& textures() const;
 	[[nodiscard]] const SpriteMap& sprites() const;
+	[[nodiscard]] const BackgroundMap& backgrounds() const;
 	[[nodiscard]] const FontMap& fonts() const;
 	[[nodiscard]] const MapMap& maps() const;
 	[[nodiscard]] const MapMap& collisions() const;
@@ -62,6 +71,7 @@ public:
 	[[nodiscard]] const sf::Sprite& getSprite(
 		const std::string& tag, size_t index
 	) const;
+	[[nodiscard]] const Background& getBackground(const std::string& tag);
 	[[nodiscard]] const sf::Font& getFont(const std::string& tag) const;
 	[[nodiscard]] const Map& getMap(const std::string& tag) const;
 	[[nodiscard]] const Map& getCollisions(const std::string& tag) const;

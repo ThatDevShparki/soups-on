@@ -23,3 +23,15 @@ map map_004 maps/map_004_decor.csv
 map map_004 maps/map_004_items.csv
 collisions map_004 maps/map_004_mapBackground.csv
 collisions map_004 maps/map_004_mapForeground.csv
+texture bg_clouds_daytime sprites/CloudBackgroundDay.png
+texture bg_mountains_daytime sprites/MountainRangeBackgroundDay.png
+texture bg_clouds_evening sprites/CloudBackgroundEvening.png
+texture bg_mountains_evening sprites/MountainRangeBackgroundEvening.png
+texture bg_clouds_night sprites/CloudBackgroundNight.png
+texture bg_mountains_night sprites/MountainRangeBackgroundNight.png
+background daytime bg_clouds_daytime 1.0
+background daytime bg_mountains_daytime 1.25
+background evening bg_clouds_evening 1.0
+background evening bg_mountains_evening 1.25
+background night bg_clouds_night 1.0
+background night bg_mountains_night 1.25
