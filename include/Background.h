@@ -11,13 +11,12 @@ class Background : public sf::Drawable
 
 	sf::View                 m_view;
 	std::vector<sf::Texture> m_textures;
+	std::vector<sf::Sprite>  m_sprites;
 	std::vector<float>       m_factors;
 	std::vector<float>       m_offsets;
 	float                    m_size = 0;
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-	void updateView(const sf::View& view);
 
 public:
 

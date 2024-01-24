@@ -8,7 +8,7 @@ Background::Background(
 )
 	: m_textures(textures), m_factors(factors)
 {
-	for (const auto& texture: textures)
+	for (const auto& texture: m_textures)
 	{
 		float size = float(texture.getSize().y);
 		if (size > m_size)
@@ -16,6 +16,9 @@ Background::Background(
 			m_size = size;
 		}
 		m_offsets.push_back(0.0f);
+
+		sf::Sprite sprite(texture);
+		m_sprites.push_back(sprite);
 	}
 }
 
@@ -23,18 +26,22 @@ Background::Background(
 void Background::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.setView(m_view);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (const auto& sprite: m_sprites)
 	{
-		auto& texture = m_textures[i];
-		auto& offset  = m_offsets[i];
-
-		sf::Sprite sprite(texture);
-		float      scale = m_size / float(texture.getSize().y);
-		sprite.setPosition(offset, 0);
-		sprite.setScale(scale, scale);
-
-		target.draw(sprite);
+		target.draw(sprite, states);
 	}
+//	for (unsigned int i = 0; i < m_size; i++)
+//	{
+//		auto& texture = m_textures[i];
+//		auto& offset  = m_offsets[i];
+//
+//		sf::Sprite sprite(texture);
+////		float      scale = m_size / float(texture.getSize().y);
+//		sprite.setPosition(offset, 0);
+////		sprite.setScale(scale, scale);
+//
+//		target.draw(sprite, states);
+//	}
 }
 
 void Background::update(float delta)
@@ -56,6 +63,9 @@ void Background::addLayer(const sf::Texture& texture, float factor)
 	}
 	m_factors.push_back(factor);
 	m_offsets.push_back(0.0f);
+
+	sf::Sprite sprite(texture);
+	m_sprites.push_back(sprite);
 }
 
 const sf::View& Background::view() const
