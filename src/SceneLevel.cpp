@@ -21,6 +21,7 @@ void SceneLevel::init(const std::string& manifestPath)
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities (updates entities!)
+	m_background = "daytime";
 	initEntitiesFromMap("map_004");
 
 	// register actions
@@ -70,6 +71,10 @@ void SceneLevel::update(float delta)
 
 void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	target.draw(background(), states);
+
+	// render scene
+	target.setView(m_view);
 	for (const auto& e: m_entities.getEntities())
 	{
 		auto& transform = e->getComponent<CTransform>();
@@ -81,16 +86,8 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			if (sprite.has)
 			{
 				sprite.sprite.setPosition(transform.pos.x, transform.pos.y);
-				target.draw(sprite.sprite);
+				target.draw(sprite.sprite, states);
 			}
-
-//			auto& animation = e->getComponent<CAnimation>();
-//			if (animation.has)
-//			{
-//				auto& frame = animation.animation.getCurrentFrame();
-//				frame.setPosition(transform.pos.x, transform.pos.y);
-//				target.draw(frame);
-//			}
 		}
 	}
 
@@ -110,7 +107,7 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 				boundingShape.setOutlineColor(sf::Color::Black);
 				boundingShape.setPosition(sf::Vector2f(transform.pos));
 
-				target.draw(boundingShape);
+				target.draw(boundingShape, states);
 			}
 		}
 		for (const auto& e: m_entities.getEntities())
@@ -126,7 +123,7 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 				spriteShape.setOutlineColor(sf::Color::Cyan);
 				spriteShape.setPosition(sprite.sprite.getPosition());
 
-				target.draw(spriteShape);
+				target.draw(spriteShape, states);
 			}
 		}
 		for (const auto& e: m_entities.getEntities())
@@ -142,7 +139,7 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 				posShape.setOutlineColor(sf::Color::Magenta);
 				posShape.setPosition(sf::Vector2f(transform.pos));
 
-				target.draw(posShape);
+				target.draw(posShape, states);
 			}
 		}
 	}
@@ -502,4 +499,9 @@ void SceneLevel::onResizeView(const Vec2& size)
 	m_view.setSize({ width, height });
 
 	sCamera(); // make sure the camera is located correctly
+}
+
+const Background& SceneLevel::background() const
+{
+	return m_assets.getBackground(m_background);
 }
