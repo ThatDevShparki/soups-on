@@ -258,7 +258,7 @@ const sf::Sprite& AssetManager::getSprite(const std::string& tag, size_t index) 
 	return getSprites(tag)[index];
 }
 
-const Background& AssetManager::getBackground(const std::string& tag)
+const Background& AssetManager::getBackground(const std::string& tag) const
 {
 	return m_backgrounds.at(tag);
 }

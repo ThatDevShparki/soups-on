@@ -71,7 +71,7 @@ public:
 	[[nodiscard]] const sf::Sprite& getSprite(
 		const std::string& tag, size_t index
 	) const;
-	[[nodiscard]] const Background& getBackground(const std::string& tag);
+	[[nodiscard]] const Background& getBackground(const std::string& tag) const;
 	[[nodiscard]] const sf::Font& getFont(const std::string& tag) const;
 	[[nodiscard]] const Map& getMap(const std::string& tag) const;
 	[[nodiscard]] const Map& getCollisions(const std::string& tag) const;
