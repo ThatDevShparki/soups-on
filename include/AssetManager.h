@@ -27,12 +27,11 @@ class AssetManager
 	AnimationMap   m_animations;
 	SoundBufferMap m_sounds;
 
-	void init(const std::string& manifestPath);
 
 public:
+	void init(const std::string& manifestPath);
 
 	AssetManager();
-	explicit AssetManager(const std::string& manifestPath);
 
 	void addTexture(const std::string& tag, const std::string& path);
 	void addSprites(

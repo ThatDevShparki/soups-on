@@ -6,11 +6,6 @@
 
 AssetManager::AssetManager() = default;
 
-AssetManager::AssetManager(const std::string& manifestPath)
-{
-	init(manifestPath);
-}
-
 
 void AssetManager::init(const std::string& manifestPath)
 {
@@ -42,12 +37,6 @@ void AssetManager::init(const std::string& manifestPath)
 			std::string n, w, h, p;
 			file >> n >> w >> h >> p;
 			addSprites(n, std::stoi(w), std::stoi(h), "assets/" + p);
-		}
-		else if (head == "background")
-		{
-			std::string n, t, f;
-			file >> n >> t >> f;
-			addBackground(n, t, std::stof(f));
 		}
 		else if (head == "map")
 		{
@@ -123,27 +112,6 @@ void AssetManager::addSprites(
 	m_sprites[tag] = sprites;
 	std::cout << "Loaded " + std::to_string(sprites.size()) + " sprites " + tag +
 				 " from " + path << std::endl;
-}
-
-void AssetManager::addBackground(
-	const std::string& tag,
-	const std::string& textureTag,
-	float factor
-)
-{
-	auto& texture = m_textures.at(textureTag);
-
-	if (m_backgrounds.count(tag) > 0)
-	{
-		m_backgrounds.at(tag).addLayer(texture, factor);
-	}
-	else
-	{
-		m_backgrounds[tag] = Background({ texture }, { factor });
-	}
-
-	std::cout << "Loaded background " + tag + " with texture " + textureTag
-			  << std::endl;
 }
 
 void AssetManager::addFont(const std::string& tag, const std::string& path)
@@ -235,11 +203,6 @@ const SpriteMap& AssetManager::sprites() const
 	return m_sprites;
 }
 
-const BackgroundMap& AssetManager::backgrounds() const
-{
-	return m_backgrounds;
-}
-
 const FontMap& AssetManager::fonts() const
 {
 	return m_fonts;
@@ -279,11 +242,6 @@ const std::vector<sf::Sprite>& AssetManager::getSprites(const std::string& tag) 
 const sf::Sprite& AssetManager::getSprite(const std::string& tag, size_t index) const
 {
 	return getSprites(tag)[index];
-}
-
-const Background& AssetManager::getBackground(const std::string& tag) const
-{
-	return m_backgrounds.at(tag);
 }
 
 const sf::Font& AssetManager::getFont(const std::string& tag) const
