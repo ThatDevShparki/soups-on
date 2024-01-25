@@ -24,8 +24,8 @@ void Game::init(const std::string& manifestPath)
 	m_window.setFramerateLimit(m_targetFps);
 	m_view = m_window.getDefaultView();
 
-	// load assets
-	m_assets = AssetManager(manifestPath);
+	// load global assets
+	m_assets.init(manifestPath);
 
 	// register scene
 	changeScene("level", std::make_shared<SceneLevel>(this, manifestPath));
