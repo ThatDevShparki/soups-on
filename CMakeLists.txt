@@ -37,7 +37,6 @@ set(src_files
         src/AssetManager.cpp
         src/Entity.cpp
         src/EntityManager.cpp
-        src/Background.cpp
         src/Game.cpp
         src/Map.cpp
         src/main.cpp
