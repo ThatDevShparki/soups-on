@@ -27,16 +27,19 @@ protected:
 	void sCamera();
 	void sState();
 	void sCollisions();
+	void sParallax(float delta);
 	void sAnimations(float delta);
 	void sSounds();
 
-	void initEntitiesFromMap(const std::string& mapName);
+	void initEntitiesFromMap();
 	void spawnEntrance(const Vec2& pos);
 	void spawnExit(const Vec2& pos);
 	void spawnTile(const size_t i, const Vec2& pos);
 	void spawnBoundingBox(const Vec2& pos);
 	void spawnClimbableTile(const Vec2& pos);
 	void spawnPlayer();
+
+	void initBackground();
 
 	void initSounds();
 
@@ -52,7 +55,5 @@ public:
 	void doAction(const std::string& action, const ActionKind& kind) override;
 
 	void onResizeView(const Vec2& size) override;
-
-	const Background& background() const;
 
 };

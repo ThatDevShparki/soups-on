@@ -14,16 +14,19 @@ SceneLevel::~SceneLevel() = default;
 
 void SceneLevel::init(const std::string& manifestPath)
 {
-	m_background = "daytime";
-
 	// initialize placeholders
-	m_assets = AssetManager(manifestPath);
+	m_assets.init(manifestPath);
 
 	m_gridText.setCharacterSize(9);
 	m_gridText.setFont(m_assets.getFont("font"));
 
+	// init background
+	m_background = "daytime";
+	initBackground();
+
 	// init entities (updates entities!)
-	initEntitiesFromMap("map_004");
+	m_map = "map_004";
+	initEntitiesFromMap();
 
 	// register actions
 	registerAction(
@@ -70,6 +73,7 @@ void SceneLevel::update(float delta)
 
 	sAnimations(delta);
 	sCamera();
+	sParallax(delta);
 
 	sSounds();
 
@@ -78,8 +82,6 @@ void SceneLevel::update(float delta)
 
 void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(background(), states);
-
 	// render scene
 	target.setView(m_view);
 	for (const auto& e: m_entities.getEntities())
@@ -155,6 +157,7 @@ void SceneLevel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void SceneLevel::quit()
 {
+
 }
 
 
@@ -366,6 +369,23 @@ void SceneLevel::sCollisions()
 	}
 }
 
+void SceneLevel::sParallax(float delta)
+{
+	auto& ppos = m_player->getComponent<CTransform>().pos;
+
+	for (const auto& e: m_entities.getEntities("background"))
+	{
+		auto& transform = e->getComponent<CTransform>();
+		auto& parallax  = e->getComponent<CParallax>();
+
+		if (transform.has && parallax.has)
+		{
+			transform.pos = Vec2(-parallax.factor * ppos.x, transform.pos.y);
+		}
+
+	}
+}
+
 void SceneLevel::sAnimations(float delta)
 {
 	for (auto& e: m_entities.getEntities())
@@ -405,9 +425,9 @@ void SceneLevel::sSounds()
 }
 
 
-void SceneLevel::initEntitiesFromMap(const std::string& mapName)
+void SceneLevel::initEntitiesFromMap()
 {
-	const Map& map = m_assets.getMap(mapName);
+	const Map& map = m_assets.getMap(m_map);
 
 	for (int j = 0; j < map.height(); j++)
 	{
@@ -434,7 +454,7 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 		}
 	}
 
-	const Map& collisions = m_assets.getCollisions(mapName);
+	const Map& collisions = m_assets.getCollisions(m_map);
 	for (int j = 0; j < collisions.height(); j++)
 	{
 		for (int i = 0; i < collisions.width(); i++)
@@ -453,9 +473,8 @@ void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 	}
 
 	m_entities.update();
-	m_map = mapName;
 
-	std::cout << "Loaded all entities from map: " + mapName << std::endl;
+	std::cout << "Loaded all entities from map: " + m_map << std::endl;
 }
 
 void SceneLevel::spawnEntrance(const Vec2& pos)
@@ -517,6 +536,36 @@ void SceneLevel::spawnPlayer()
 }
 
 
+void SceneLevel::initBackground()
+{
+
+//	const std::vector<std::string> bgTags = {
+//		"bg_clouds_daytime", "bg_mountains_daytime"
+//	};
+	const std::vector<std::string> bgTags = {
+		"bg_clouds_daytime", "bg_mountains_daytime"
+	};
+
+	for (int i = 0; i < bgTags.size(); i++)
+	{
+		const auto& tag = bgTags[i];
+		std::cout << tag << std::endl;
+
+		auto bg = m_entities.addEntity("background");
+		auto& bg_sprite = bg->addComponent<CSprite>(
+			m_assets.getSprite(tag, 0)
+		);
+		float scale = (
+			m_tileSize.y * 18 / // A bit hacky...
+			bg_sprite.sprite.getGlobalBounds().height
+		);
+		bg_sprite.sprite.setScale({ scale, scale });
+		bg->addComponent<CTransform>();
+		bg->addComponent<CParallax>(0.15f * float(i + 1));
+	}
+}
+
+
 void SceneLevel::initSounds()
 {
 	auto theme = m_entities.addEntity("sound");
@@ -536,9 +585,4 @@ void SceneLevel::onResizeView(const Vec2& size)
 	m_view.setSize({ width, height });
 
 	sCamera(); // make sure the camera is located correctly
-}
-
-const Background& SceneLevel::background() const
-{
-	return m_assets.getBackground(m_background);
 }

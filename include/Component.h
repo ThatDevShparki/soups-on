@@ -171,3 +171,16 @@ public:
 	{
 	}
 };
+
+class CParallax : public Component
+{
+public:
+	float factor;
+
+	CParallax() = default;
+
+	CParallax(float factor)
+		: factor(factor)
+	{
+	}
+};
