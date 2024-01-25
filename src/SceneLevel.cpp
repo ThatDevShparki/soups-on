@@ -373,7 +373,7 @@ void SceneLevel::sParallax(float delta)
 {
 	auto& ppos = m_player->getComponent<CTransform>().pos;
 
-	for (const auto& e: m_entities.getEntities("background"))
+	for (const auto& e: m_entities.getEntities())
 	{
 		auto& transform = e->getComponent<CTransform>();
 		auto& parallax  = e->getComponent<CParallax>();
@@ -549,8 +549,6 @@ void SceneLevel::initBackground()
 	for (int i = 0; i < bgTags.size(); i++)
 	{
 		const auto& tag = bgTags[i];
-		std::cout << tag << std::endl;
-
 		auto bg = m_entities.addEntity("background");
 		auto& bg_sprite = bg->addComponent<CSprite>(
 			m_assets.getSprite(tag, 0)
@@ -563,6 +561,19 @@ void SceneLevel::initBackground()
 		bg->addComponent<CTransform>();
 		bg->addComponent<CParallax>(0.15f * float(i + 1));
 	}
+
+	const std::string& fgTag = "bg_clouds_floating_daytime";
+	auto fg = m_entities.addEntity("backgroundDecor");
+	auto& fg_sprite = fg->addComponent<CSprite>(
+		m_assets.getSprite(fgTag, 0)
+	);
+	float scale = (m_tileSize.y * 18 / fg_sprite.sprite.getGlobalBounds().height) *
+				  0.85f;
+	fg_sprite.sprite.setScale({ scale, scale });
+	fg_sprite.sprite.setColor(sf::Color(255, 255, 255, 128));
+	fg->addComponent<CTransform>();
+	fg->addComponent<CParallax>(0.5f);
+
 }
 
 
