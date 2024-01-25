@@ -15,6 +15,7 @@ protected:
 	std::shared_ptr<Entity> m_player;
 	std::string             m_map;
 	std::string             m_background;
+	std::string             m_music;
 	bool                    m_renderDebug = false;
 	Vec2                    m_tileSize    = { 32.0f, 32.0f };
 	float                   m_tileZoom    = 16.0f;
@@ -27,6 +28,7 @@ protected:
 	void sState();
 	void sCollisions();
 	void sAnimations(float delta);
+	void sSounds();
 
 	void initEntitiesFromMap(const std::string& mapName);
 	void spawnEntrance(const Vec2& pos);
@@ -35,6 +37,8 @@ protected:
 	void spawnBoundingBox(const Vec2& pos);
 	void spawnClimbableTile(const Vec2& pos);
 	void spawnPlayer();
+
+	void initSounds();
 
 
 public:
@@ -50,4 +54,5 @@ public:
 	void onResizeView(const Vec2& size) override;
 
 	const Background& background() const;
+
 };

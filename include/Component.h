@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "Vec2.h"
 #include "Animation.h"
 
@@ -151,6 +152,22 @@ public:
 
 	explicit CAnimation(const Animation& animation)
 		: animation(animation)
+	{
+	}
+};
+
+class CSound : public Component
+{
+public:
+	sf::SoundBuffer buffer;
+	sf::Sound       sound;
+	float           volume = 50.0f;
+	bool            paused = false;
+
+	CSound() = default;
+
+	explicit CSound(const sf::SoundBuffer& buffer)
+		: buffer(buffer), sound(sf::Sound(buffer))
 	{
 	}
 };

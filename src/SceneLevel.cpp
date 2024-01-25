@@ -14,6 +14,8 @@ SceneLevel::~SceneLevel() = default;
 
 void SceneLevel::init(const std::string& manifestPath)
 {
+	m_background = "daytime";
+
 	// initialize placeholders
 	m_assets = AssetManager(manifestPath);
 
@@ -21,7 +23,6 @@ void SceneLevel::init(const std::string& manifestPath)
 	m_gridText.setFont(m_assets.getFont("font"));
 
 	// init entities (updates entities!)
-	m_background = "daytime";
 	initEntitiesFromMap("map_004");
 
 	// register actions
@@ -52,6 +53,10 @@ void SceneLevel::init(const std::string& manifestPath)
 
 	// initialize view
 	onResizeView(Vec2(m_game->view().getSize()));
+
+	// TODO: Load these from file
+	m_music = "main_theme";
+	initSounds();
 }
 
 void SceneLevel::update(float delta)
@@ -65,6 +70,8 @@ void SceneLevel::update(float delta)
 
 	sAnimations(delta);
 	sCamera();
+
+	sSounds();
 
 	m_currentFrame++;
 }
@@ -379,6 +386,24 @@ void SceneLevel::sAnimations(float delta)
 	}
 }
 
+void SceneLevel::sSounds()
+{
+	for (auto& e: m_entities.getEntities("sound"))
+	{
+		auto& s = e->getComponent<CSound>();
+
+		if (s.paused && (s.sound.getStatus() != sf::SoundSource::Paused ||
+						 sf::SoundSource::Stopped))
+		{
+			s.sound.pause();
+		}
+		else if (!s.paused && s.sound.getStatus() != sf::SoundSource::Playing)
+		{
+			s.sound.play();
+		}
+	}
+}
+
 
 void SceneLevel::initEntitiesFromMap(const std::string& mapName)
 {
@@ -490,6 +515,18 @@ void SceneLevel::spawnPlayer()
 
 	m_player = player;
 }
+
+
+void SceneLevel::initSounds()
+{
+	auto theme = m_entities.addEntity("sound");
+	theme->addComponent<CSound>(m_assets.getSound(m_music));
+
+	auto& sound = theme->getComponent<CSound>().sound;
+	sound.setVolume(15.0f);
+	sound.setLoop(true);
+}
+
 
 void SceneLevel::onResizeView(const Vec2& size)
 {

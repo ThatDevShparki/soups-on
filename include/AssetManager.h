@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "Map.h"
 #include "Animation.h"
 #include "Background.h"
@@ -13,16 +14,18 @@ typedef std::map<std::string, Background>              BackgroundMap;
 typedef std::map<std::string, sf::Font>                FontMap;
 typedef std::map<std::string, Map>                     MapMap;
 typedef std::map<std::string, Animation>               AnimationMap;
+typedef std::map<std::string, sf::SoundBuffer>         SoundBufferMap;
 
 class AssetManager
 {
-	TextureMap    m_textures;
-	SpriteMap     m_sprites;
-	BackgroundMap m_backgrounds;
-	FontMap       m_fonts;
-	MapMap        m_maps;
-	MapMap        m_collisions;
-	AnimationMap  m_animations;
+	TextureMap     m_textures;
+	SpriteMap      m_sprites;
+	BackgroundMap  m_backgrounds;
+	FontMap        m_fonts;
+	MapMap         m_maps;
+	MapMap         m_collisions;
+	AnimationMap   m_animations;
+	SoundBufferMap m_sounds;
 
 	void init(const std::string& manifestPath);
 
@@ -55,6 +58,10 @@ public:
 		float length,
 		const std::string& path
 	);
+	void addSound(
+		const std::string& tag,
+		const std::string& path
+	);
 
 	[[nodiscard]] const TextureMap& textures() const;
 	[[nodiscard]] const SpriteMap& sprites() const;
@@ -63,6 +70,7 @@ public:
 	[[nodiscard]] const MapMap& maps() const;
 	[[nodiscard]] const MapMap& collisions() const;
 	[[nodiscard]] const AnimationMap& animations() const;
+	[[nodiscard]] const SoundBufferMap& sounds() const;
 
 	[[nodiscard]] const sf::Texture& getTexture(const std::string& tag) const;
 	[[nodiscard]] const std::vector<sf::Sprite>& getSprites(
@@ -76,4 +84,5 @@ public:
 	[[nodiscard]] const Map& getMap(const std::string& tag) const;
 	[[nodiscard]] const Map& getCollisions(const std::string& tag) const;
 	[[nodiscard]] const Animation& getAnimation(const std::string& tag) const;
+	[[nodiscard]] const sf::SoundBuffer& getSound(const std::string& tag) const;
 };

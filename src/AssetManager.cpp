@@ -67,6 +67,12 @@ void AssetManager::init(const std::string& manifestPath)
 			file >> n >> w >> h >> l >> p;
 			addAnimation(n, std::stoi(w), std::stoi(h), std::stof(l), "assets/" + p);
 		}
+		else if (head == "music")
+		{
+			std::string n, p;
+			file >> n >> p;
+			addSound(n, "assets/" + p);
+		}
 	}
 	std::cout << "Loaded all assets from manifest " + manifestPath << std::endl;
 }
@@ -206,6 +212,18 @@ void AssetManager::addAnimation(
 		   path << std::endl;
 }
 
+void AssetManager::addSound(const std::string& tag, const std::string& path)
+{
+	sf::SoundBuffer soundBuffer;
+	if (!soundBuffer.loadFromFile(path))
+	{
+		std::cerr << "Unable to open music from file " + path << std::endl;
+		throw std::invalid_argument("Unable to open music file");
+	}
+	m_sounds[tag] = soundBuffer;
+	std::cout << "Loaded sound " + tag + " from " + path << std::endl;
+}
+
 
 const TextureMap& AssetManager::textures() const
 {
@@ -240,6 +258,11 @@ const MapMap& AssetManager::collisions() const
 const AnimationMap& AssetManager::animations() const
 {
 	return m_animations;
+}
+
+const SoundBufferMap& AssetManager::sounds() const
+{
+	return m_sounds;
 }
 
 
@@ -281,4 +304,9 @@ const Map& AssetManager::getCollisions(const std::string& tag) const
 const Animation& AssetManager::getAnimation(const std::string& tag) const
 {
 	return m_animations.at(tag);
+}
+
+const sf::SoundBuffer& AssetManager::getSound(const std::string& tag) const
+{
+	return m_sounds.at(tag);
 }

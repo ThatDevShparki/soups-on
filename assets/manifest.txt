@@ -35,3 +35,4 @@ background evening bg_clouds_evening 1.0
 background evening bg_mountains_evening 1.25
 background night bg_clouds_night 1.0
 background night bg_mountains_night 1.25
+music main_theme audio/main_theme.wav
