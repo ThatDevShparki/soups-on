@@ -23,13 +23,13 @@ map map_004 maps/map_004_decor.csv
 map map_004 maps/map_004_items.csv
 collisions map_004 maps/map_004_mapBackground.csv
 collisions map_004 maps/map_004_mapForeground.csv
-sprites bg_mountains_daytime 576 256 sprites/MountainRangeBackgroundDay.png
-sprites bg_clouds_daytime 576 256 sprites/CloudBackgroundDay.png
-sprites bg_clouds_floating_daytime 576 256 sprites/CloudForegroundDay.png
-sprites bg_mountains_evening 576 256 sprites/MountainRangeBackgroundEvening.png
-sprites bg_clouds_evening 576 256 sprites/CloudBackgroundEvening.png
-sprites bg_clouds_floating_evening 576 256 sprites/CloudForegroundEvening.png
-sprites bg_mountains_night 576 256 sprites/MountainRangeBackgroundNight.png
-sprites bg_clouds_night 576 256 sprites/CloudBackgroundNight.png
-sprites bg_clouds_floating_night 576 256 sprites/CloudForegroundNight.png
+background bg_mountains_daytime 576 256 sprites/MountainRangeBackgroundDay.png
+background bg_clouds_daytime 576 256 sprites/CloudBackgroundDay.png
+background bg_clouds_floating_daytime 576 256 sprites/CloudForegroundDay.png
+background bg_mountains_evening 576 256 sprites/MountainRangeBackgroundEvening.png
+background bg_clouds_evening 576 256 sprites/CloudBackgroundEvening.png
+background bg_clouds_floating_evening 576 256 sprites/CloudForegroundEvening.png
+background bg_mountains_night 576 256 sprites/MountainRangeBackgroundNight.png
+background bg_clouds_night 576 256 sprites/CloudBackgroundNight.png
+background bg_clouds_floating_night 576 256 sprites/CloudForegroundNight.png
 music main_theme audio/main_theme.wav

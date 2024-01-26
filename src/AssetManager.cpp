@@ -38,6 +38,12 @@ void AssetManager::init(const std::string& manifestPath)
 			file >> n >> w >> h >> p;
 			addSprites(n, std::stoi(w), std::stoi(h), "assets/" + p);
 		}
+		else if (head == "background")
+		{
+			std::string n, w, h, p;
+			file >> n >> w >> h >> p;
+			addSprites(n, std::stoi(w), std::stoi(h), "assets/" + p, true);
+		}
 		else if (head == "map")
 		{
 			std::string n, p;
@@ -67,7 +73,11 @@ void AssetManager::init(const std::string& manifestPath)
 }
 
 
-void AssetManager::addTexture(const std::string& tag, const std::string& path)
+void AssetManager::addTexture(
+	const std::string& tag,
+	const std::string& path,
+	bool repeated
+)
 {
 	sf::Texture texture;
 	if (!texture.loadFromFile(path))
@@ -75,18 +85,25 @@ void AssetManager::addTexture(const std::string& tag, const std::string& path)
 		std::cerr << "Could not load texture from path: " + path << std::endl;
 		exit(-1);
 	}
+	texture.setRepeated(repeated);
 	m_textures[tag] = texture;
 	std::cout << "Loaded texture " + tag + " from " + path << std::endl;
+}
+
+void AssetManager::addTexture(const std::string& tag, const std::string& path)
+{
+	addTexture(tag, path, false);
 }
 
 void AssetManager::addSprites(
 	const std::string& tag,
 	size_t width,
 	size_t height,
-	const std::string& path
+	const std::string& path,
+	bool repeated
 )
 {
-	addTexture(tag, path);
+	addTexture(tag, path, repeated);
 
 	std::vector<sf::Sprite> sprites;
 	auto& texture = getTexture(tag);
@@ -112,6 +129,16 @@ void AssetManager::addSprites(
 	m_sprites[tag] = sprites;
 	std::cout << "Loaded " + std::to_string(sprites.size()) + " sprites " + tag +
 				 " from " + path << std::endl;
+}
+
+void AssetManager::addSprites(
+	const std::string& tag,
+	size_t width,
+	size_t height,
+	const std::string& path
+)
+{
+	return addSprites(tag, width, height, path, false);
 }
 
 void AssetManager::addFont(const std::string& tag, const std::string& path)

@@ -31,11 +31,19 @@ public:
 	AssetManager();
 
 	void addTexture(const std::string& tag, const std::string& path);
+	void addTexture(const std::string& tag, const std::string& path, bool repeated);
 	void addSprites(
 		const std::string& tag,
 		size_t width,
 		size_t height,
 		const std::string& path
+	);
+	void addSprites(
+		const std::string& tag,
+		size_t width,
+		size_t height,
+		const std::string& path,
+		bool repeated
 	);
 	void addFont(const std::string& tag, const std::string& path);
 	void addMap(const std::string& tag, const std::vector<std::string>& paths);
