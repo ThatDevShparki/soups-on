@@ -371,16 +371,18 @@ void SceneLevel::sCollisions()
 
 void SceneLevel::sParallax(float delta)
 {
-	auto& ppos = m_player->getComponent<CTransform>().pos;
+	auto& pvel = m_player->getComponent<CTransform>().vel;
 
 	for (const auto& e: m_entities.getEntities())
 	{
 		auto& transform = e->getComponent<CTransform>();
+		auto& sprite    = e->getComponent<CSprite>();
 		auto& parallax  = e->getComponent<CParallax>();
 
-		if (transform.has && parallax.has)
+		if (transform.has && parallax.has && sprite.has)
 		{
-			transform.pos = Vec2(-parallax.factor * ppos.x, transform.pos.y);
+			transform.vel = Vec2{ -parallax.factor * pvel.x, 0 };
+			transform.pos += transform.vel;
 		}
 
 	}
@@ -538,10 +540,6 @@ void SceneLevel::spawnPlayer()
 
 void SceneLevel::initBackground()
 {
-
-//	const std::vector<std::string> bgTags = {
-//		"bg_clouds_daytime", "bg_mountains_daytime"
-//	};
 	const std::vector<std::string> bgTags = {
 		"bg_clouds_daytime", "bg_mountains_daytime"
 	};
@@ -553,12 +551,22 @@ void SceneLevel::initBackground()
 		auto& bg_sprite = bg->addComponent<CSprite>(
 			m_assets.getSprite(tag, 0)
 		);
-		float scale = (
-			m_tileSize.y * 18 / // A bit hacky...
-			bg_sprite.sprite.getGlobalBounds().height
-		);
+
+		const auto& size = bg_sprite.sprite.getGlobalBounds().getSize();
+		float scale = m_tileSize.y * 18 / size.y; // A bit hacky...
 		bg_sprite.sprite.setScale({ scale, scale });
+
+//		bg->addComponent<CTransform>(Vec2{ -size.x, 0 });
 		bg->addComponent<CTransform>();
+//		bg_sprite.sprite.setTextureRect(
+//			sf::IntRect{
+//				int(size.x),
+//				0,
+//				int(size.x * 3),
+//				int(size.y)
+//			}
+//		);
+
 		bg->addComponent<CParallax>(0.15f * float(i + 1));
 	}
 
@@ -567,13 +575,24 @@ void SceneLevel::initBackground()
 	auto& fg_sprite = fg->addComponent<CSprite>(
 		m_assets.getSprite(fgTag, 0)
 	);
-	float scale = (m_tileSize.y * 18 / fg_sprite.sprite.getGlobalBounds().height) *
-				  0.85f;
-	fg_sprite.sprite.setScale({ scale, scale });
 	fg_sprite.sprite.setColor(sf::Color(255, 255, 255, 128));
-	fg->addComponent<CTransform>();
-	fg->addComponent<CParallax>(0.5f);
 
+	const auto& size = fg_sprite.sprite.getGlobalBounds().getSize();
+	float scale = (m_tileSize.y * 18 / size.y) * 0.85f;
+	fg_sprite.sprite.setScale({ scale, scale });
+
+//	fg->addComponent<CTransform>(Vec2{ -size.x, 0 });
+	fg->addComponent<CTransform>();
+//	fg_sprite.sprite.setTextureRect(
+//		sf::IntRect{
+//			int(size.x),
+//			0,
+//			int(size.x * 3),
+//			int(size.y)
+//		}
+//	);
+
+	fg->addComponent<CParallax>(0.5f);
 }
 
 
