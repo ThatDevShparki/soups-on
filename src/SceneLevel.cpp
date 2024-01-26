@@ -544,55 +544,61 @@ void SceneLevel::initBackground()
 		"bg_clouds_daytime", "bg_mountains_daytime"
 	};
 
+
 	for (int i = 0; i < bgTags.size(); i++)
 	{
 		const auto& tag = bgTags[i];
+
 		auto bg = m_entities.addEntity("background");
 		auto& bg_sprite = bg->addComponent<CSprite>(
 			m_assets.getSprite(tag, 0)
 		);
+		bg_sprite.sprite.setTextureRect(
+			sf::IntRect(
+				0,
+				0,
+				bg_sprite.sprite.getGlobalBounds().width * 3,
+				bg_sprite.sprite.getGlobalBounds().height
+			)
+		);
 
-		const auto& size = bg_sprite.sprite.getGlobalBounds().getSize();
-		float scale = m_tileSize.y * 18 / size.y; // A bit hacky...
+		float scale = (
+			m_tileSize.y * 18 / bg_sprite.sprite.getGlobalBounds().height
+		);
+
 		bg_sprite.sprite.setScale({ scale, scale });
-
-//		bg->addComponent<CTransform>(Vec2{ -size.x, 0 });
-		bg->addComponent<CTransform>();
-//		bg_sprite.sprite.setTextureRect(
-//			sf::IntRect{
-//				int(size.x),
-//				0,
-//				int(size.x * 3),
-//				int(size.y)
-//			}
-//		);
+		bg->addComponent<CTransform>(
+			Vec2{ -bg_sprite.sprite.getGlobalBounds().width / 3, 0 }
+		);
 
 		bg->addComponent<CParallax>(0.15f * float(i + 1));
 	}
 
 	const std::string& fgTag = "bg_clouds_floating_daytime";
+
 	auto fg = m_entities.addEntity("backgroundDecor");
 	auto& fg_sprite = fg->addComponent<CSprite>(
 		m_assets.getSprite(fgTag, 0)
 	);
+	fg_sprite.sprite.setTextureRect(
+		sf::IntRect(
+			0,
+			0,
+			fg_sprite.sprite.getGlobalBounds().width * 3,
+			fg_sprite.sprite.getGlobalBounds().height
+		)
+	);
 	fg_sprite.sprite.setColor(sf::Color(255, 255, 255, 128));
 
-	const auto& size = fg_sprite.sprite.getGlobalBounds().getSize();
-	float scale = (m_tileSize.y * 18 / size.y) * 0.85f;
+	float scale = (m_tileSize.y * 18 / fg_sprite.sprite.getGlobalBounds().height) *
+				  0.85f;
+
 	fg_sprite.sprite.setScale({ scale, scale });
+	fg->addComponent<CTransform>(
+		Vec2{ -fg_sprite.sprite.getGlobalBounds().width / 3, 0 }
+	);
 
-//	fg->addComponent<CTransform>(Vec2{ -size.x, 0 });
-	fg->addComponent<CTransform>();
-//	fg_sprite.sprite.setTextureRect(
-//		sf::IntRect{
-//			int(size.x),
-//			0,
-//			int(size.x * 3),
-//			int(size.y)
-//		}
-//	);
-
-	fg->addComponent<CParallax>(0.5f);
+	fg->addComponent<CParallax>(0.65f);
 }
 
 
