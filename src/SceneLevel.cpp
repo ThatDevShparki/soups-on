@@ -353,6 +353,16 @@ void SceneLevel::sCollisions()
 	const auto& pBox = m_player->getComponent<CBoundingBox>();
 	const auto& pPos = m_player->getComponent<CTransform>().pos + pBox.halfSize;
 
+	// Check for map collision
+	if (pPos.x < pBox.halfSize.x ||
+		pPos.x + pBox.halfSize.x > m_assets.getMap(m_map).width() * m_tileSize.x ||
+		pPos.y < pBox.halfSize.y ||
+		pPos.y + pBox.halfSize.y > m_assets.getMap(m_map).height() * m_tileSize.y)
+	{
+		m_player->getComponent<CTransform>().pos = m_player->getComponent<CTransform>().prevPos;
+	}
+
+	// Check for entity collision
 	for (auto& e: m_entities.getEntities("boundingBox"))
 	{
 		const auto& eBox = e->getComponent<CBoundingBox>();
