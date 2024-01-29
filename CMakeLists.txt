@@ -43,6 +43,7 @@ set(src_files
         src/Scene.cpp
         src/SceneMenu.cpp
         src/SceneLevel.cpp
+        src/Stage.cpp
         src/Vec2.cpp
 )
 add_executable(${project} ${src_files})
