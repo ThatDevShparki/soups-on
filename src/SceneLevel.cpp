@@ -551,7 +551,7 @@ void SceneLevel::spawnPlayer()
 void SceneLevel::initBackground()
 {
 	const std::vector<std::string> bgTags = {
-		"bg_clouds_daytime", "bg_mountains_daytime"
+		"bg_clouds_night", "bg_mountains_night"
 	};
 
 
@@ -584,7 +584,7 @@ void SceneLevel::initBackground()
 		bg->addComponent<CParallax>(0.15f * float(i + 1));
 	}
 
-	const std::string& fgTag = "bg_clouds_floating_daytime";
+	const std::string& fgTag = "bg_clouds_floating_night";
 
 	auto fg = m_entities.addEntity("backgroundDecor");
 	auto& fg_sprite = fg->addComponent<CSprite>(
@@ -632,3 +632,4 @@ void SceneLevel::onResizeView(const Vec2& size)
 
 	sCamera(); // make sure the camera is located correctly
 }
+

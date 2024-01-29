@@ -1,35 +1,25 @@
 font font fonts/m5x7.ttf
-sprites level_debug 32 32 sprites/level_debug.png
-sprites player_debug 24 48 sprites/player_debug.png
-texture textures_background_debug sprites/textures_background_debug.png
-texture textures_collision_debug sprites/textures_collision_debug.png
-texture textures_foreground_debug sprites/textures_foreground_debug.png
-map map_001 maps/map_001_background.csv
-map map_001 maps/map_001_backgroundDecor.csv
-map map_001 maps/map_001_map.csv
-map map_001 maps/map_001_items.csv
-map map_001 maps/map_001_foreground.csv
-map awesomeMap maps/map_002_items.csv
-map awesomeMap maps/map_002_map.csv
-map marioMap maps/map_003_items.csv
-map marioMap maps/map_003_map.csv
-sprites background 32 32 sprites/SO-BKGTILESET.png
-animation dudeIdle 32 48 0.75 sprites/SOG1IDLE.png
-animation dudeRunning 32 48 0.5 sprites/SO-GUYRUNNING.png
-animation dudeJumping 48 48 1.5 sprites/S0-GUYJUMP.png
+
 map map_004 maps/map_004_mapBackground.csv
 map map_004 maps/map_004_mapForeground.csv
 map map_004 maps/map_004_decor.csv
 map map_004 maps/map_004_items.csv
 collisions map_004 maps/map_004_mapBackground.csv
 collisions map_004 maps/map_004_mapForeground.csv
-background bg_mountains_daytime 576 256 sprites/MountainRangeBackgroundDay.png
-background bg_clouds_daytime 576 256 sprites/CloudBackgroundDay.png
-background bg_clouds_floating_daytime 576 256 sprites/CloudForegroundDay.png
-background bg_mountains_evening 576 256 sprites/MountainRangeBackgroundEvening.png
-background bg_clouds_evening 576 256 sprites/CloudBackgroundEvening.png
-background bg_clouds_floating_evening 576 256 sprites/CloudForegroundEvening.png
-background bg_mountains_night 576 256 sprites/MountainRangeBackgroundNight.png
-background bg_clouds_night 576 256 sprites/CloudBackgroundNight.png
-background bg_clouds_floating_night 576 256 sprites/CloudForegroundNight.png
+
+sprites background 32 32 sprites/tilesets/background.png
+sprites foreground 32 32 sprites/tilesets/foreground.png
+animation dudeIdle 42 70 0.75 sprites/guy/guyIdle.png
+animation dudeRunning 45 70 0.5 sprites/guy/guyRunning.png
+animation dudeJumping 45 65 1.5 sprites/guy/guyJumping.png
+background bg_mountains_daytime 576 256 sprites/backgrounds/MountainRangeBackgroundDay.png
+background bg_clouds_daytime 576 256 sprites/backgrounds/CloudBackgroundDay.png
+background bg_clouds_floating_daytime 576 256 sprites/backgrounds/CloudForegroundDay.png
+background bg_mountains_evening 576 256 sprites/backgrounds/MountainRangeBackgroundEvening.png
+background bg_clouds_evening 576 256 sprites/backgrounds/CloudBackgroundEvening.png
+background bg_clouds_floating_evening 576 256 sprites/backgrounds/CloudForegroundEvening.png
+background bg_mountains_night 576 256 sprites/backgrounds/MountainRangeBackgroundNight.png
+background bg_clouds_night 576 256 sprites/backgrounds/CloudBackgroundNight.png
+background bg_clouds_floating_night 576 256 sprites/backgrounds/CloudForegroundNight.png
+
 music main_theme audio/main_theme.wav
