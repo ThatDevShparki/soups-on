@@ -391,10 +391,14 @@ void SceneLevel::sParallax(float delta)
 
 		if (transform.has && parallax.has && sprite.has)
 		{
-			transform.vel = Vec2{ -parallax.factor * pvel.x, 0 };
-			transform.pos += transform.vel;
-		}
+			float maxVel     = 1.0f;
+			float defaultVel = (pvel.x >= 0 ? maxVel : -maxVel);
+			float actualVel  = (pvel.x != 0 ? pvel.x : defaultVel);
 
+			transform.vel = Vec2{ -parallax.factor * actualVel, 0 };
+			transform.pos += transform.vel;
+
+		}
 	}
 }
 
